@@ -10,4 +10,8 @@
     <ProjectReference Include="..\ShopLibrary\ShopLibrary.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\lib\" />
+  </ItemGroup>
+
 </Project>
