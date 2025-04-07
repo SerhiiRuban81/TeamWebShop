@@ -1,7 +1,7 @@
 ﻿using ShopLibrary;
 using System.ComponentModel.DataAnnotations;
 
-namespace TeamWebShop.Models.DTO
+namespace TeamWebShop.Models.DTOs
 {
     public class CategoryDTO
     {
