@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace TeamWebShop.Models.DTO
+namespace TeamWebShop.Models.DTOs
 {
     public class ProductDTO
     {
