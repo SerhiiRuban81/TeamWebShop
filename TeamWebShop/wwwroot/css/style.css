@@ -1,0 +1,13 @@
+﻿body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+body>*{
+    flex: 0 1 auto;
+}
+
+#main{
+    flex-grow: 1;
+}
