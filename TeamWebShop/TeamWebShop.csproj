@@ -13,7 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ShopLibrary\ShopLibrary.csproj" />
+    <Folder Include="wwwroot\lib\" />
   </ItemGroup>
 
 </Project>
