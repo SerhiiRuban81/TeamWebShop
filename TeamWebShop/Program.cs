@@ -7,11 +7,18 @@ var builder = WebApplication.CreateBuilder(args);
 
 ///////////////////////
 //Addings
-string connStr = builder.Configuration.GetConnectionString("RozegroShopDb") ?? 
+string connStr = builder.Configuration.GetConnectionString("AivenDb") ??
     throw new InvalidCastException("Connection string not configured!");
 
-builder.Services.AddDbContext<ShopContext>(options => 
-options.UseSqlServer(connStr));
+builder.Services.AddDbContext<ShopContext>(options =>
+{
+    if (builder.Environment.IsDevelopment())
+        options.UseMySql(connStr, ServerVersion.AutoDetect(connStr));
+    else
+        options.UseSqlServer(connStr);
+}
+);
+
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddIdentity<ShopUser, IdentityRole>()
