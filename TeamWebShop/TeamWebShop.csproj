@@ -16,4 +16,8 @@
     <Folder Include="wwwroot\lib\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\ShopLibrary\ShopLibrary.csproj" />
+  </ItemGroup>
+
 </Project>
