@@ -7,6 +7,22 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Folder Include="Models\DTOs\Admin\" />
+    <Folder Include="Models\DTOs\Brands\" />
+    <Folder Include="Models\DTOs\Categories\" />
+    <Folder Include="Models\DTOs\Users\" />
+    <Folder Include="Models\DTOs\Roles\" />
+    <Folder Include="Models\DTOs\ProductImages\" />
+    <Folder Include="Models\ViewModels\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.14" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="9.0.3" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.7" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\ShopLibrary\ShopLibrary.csproj" />
   </ItemGroup>
 

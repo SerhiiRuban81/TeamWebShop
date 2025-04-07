@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ShopLibrary
 {
-    class Product
+    public class Product
     {
         public int Id { get; set; }
 
