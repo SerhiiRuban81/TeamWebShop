@@ -20,7 +20,7 @@ namespace TeamWebShop.Data
         public DbSet<Product> Products { get; set; }
 
         public DbSet<ProductImage> Images { get; set; }
-        public DbSet<TeamWebShop.Models.DTOs.Users.UserDTO> UserDTO { get; set; } = default!;
+        
        
        
        
