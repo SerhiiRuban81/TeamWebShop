@@ -20,9 +20,9 @@ namespace ShopLibrary
         [ForeignKey(nameof(ParentCategoryId))]
         public Category? ParentCategory { get; set; }
 
-        public ICollection<Category> ChildCategories { get; set; } = default!;
+        public ICollection<Category>? ChildCategories { get; set; } = default!;
 
-        public ICollection<Product> Products { get; set; } = default!;
+        public ICollection<Product>? Products { get; set; } = default!;
 
     }
 }
