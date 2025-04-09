@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace TeamWebShop.Models.DTOs
+namespace TeamWebShop.Models.DTOs.Brands
 {
     public class BrandDTO
     {
