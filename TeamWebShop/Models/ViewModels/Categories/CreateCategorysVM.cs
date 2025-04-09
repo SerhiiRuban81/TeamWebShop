@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
 using TeamWebShop.Models.DTOs;
+using TeamWebShop.Models.DTOs.Categories;
 
 namespace TeamWebShop.Models.ViewModels.Categories
 {
