@@ -1,0 +1,26 @@
+﻿@model ShopLibrary.Brand
+@*
+    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@
+<div style="margin: 2rem;">
+    <h1 style="text-align:center;">Brand</h1>
+    <table class="table table-striped table-bordered">
+        <thead class="table-dark">
+            <tr>
+                <th scope="col">@Html.DisplayNameFor(model => model.BrandName)</th>
+                <th scope="col">@Html.DisplayNameFor(model => model.Country)</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>@Html.DisplayFor(modelItem => modelItem.BrandName)</td>
+                <td>@Html.DisplayFor(modelItem => modelItem.Country)</td>
+                <td>
+                    <a class="btn btn-sm btn-warning" asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
+                    <a class="btn btn-sm btn-info" asp-action="Index">Back to List</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
