@@ -1,7 +1,7 @@
 ﻿using ShopLibrary;
 using System.ComponentModel.DataAnnotations;
 
-namespace TeamWebShop.Models.DTOs
+namespace TeamWebShop.Models.DTOs.Categories
 {
     public class CategoryDTO
     {
@@ -14,8 +14,8 @@ namespace TeamWebShop.Models.DTOs
         public int? ParentCategoryId { get; set; }
         public CategoryDTO? ParentCategory { get; set; }
 
-        public ICollection<CategoryDTO> ChildCategories { get; set; } = default!;
+        public ICollection<CategoryDTO>? ChildCategories { get; set; } = default!;
 
-        public ICollection<Product> Products { get; set; } = default!;
+        public ICollection<Product>? Products { get; set; } = default!;
     }
 }
