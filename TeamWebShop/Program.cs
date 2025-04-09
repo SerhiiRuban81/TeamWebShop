@@ -4,7 +4,6 @@ using Microsoft.Extensions.Options;
 using TeamWebShop.Data;
 using TeamWebShop.Profiles;
 
-
 var builder = WebApplication.CreateBuilder(args);
 
 string connStr = builder.Configuration.GetConnectionString("AivenDb") ??
@@ -21,18 +20,27 @@ builder.Services.AddDbContext<ShopContext>(options =>
 
 
 builder.Services.AddControllersWithViews();
-builder.Services.AddIdentity<ShopUser, IdentityRole>()
+builder.Services.AddIdentity<ShopUser, IdentityRole>(
+    options =>
+    {
+        options.Password.RequiredLength = 8;
+        options.Password.RequireDigit = true;
+        options.Password.RequireLowercase = true;
+        options.Password.RequireUppercase = true;
+        options.Password.RequireNonAlphanumeric = false;
+    })
     .AddEntityFrameworkStores<ShopContext>();
 
-
+builder.Services.AddAutoMapper(typeof(UserProfile));
 builder.Services.AddAutoMapper(typeof(BrandProfile));
 
 var app = builder.Build();
 
 app.UseDefaultFiles();
 app.UseStaticFiles();
-app.UseAuthorization();
 app.UseAuthentication();
+app.UseAuthorization();
+
 
 
 app.MapControllerRoute(
