@@ -4,7 +4,7 @@ namespace TeamWebShop.Models.DTOs.Admin
 {
     public class RegisterUserDTO
     {
-        public int ID { get; set; }
+        //public int ID { get; set; }
 
         [Required]
         [Display(Name = "Email")]

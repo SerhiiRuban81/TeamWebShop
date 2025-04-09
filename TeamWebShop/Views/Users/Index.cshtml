@@ -1,0 +1,35 @@
+﻿@using TeamWebShop.Models.DTOs.Users
+@model IEnumerable<UserDTO>
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+<h1 сlass="mb-3">List users</h1>
+<table>
+    <thead>
+        <tr>
+            <th>@Html.DisplayNameFor(modelItem => modelItem.Id)</th>
+            <th>@Html.DisplayNameFor(modelItem => modelItem.Email)</th>
+            <th>@Html.DisplayNameFor(modelItem => modelItem.IsPrivatePerson)</th>
+            <th></th>
+        </tr>
+
+    </thead>
+    <tbody>
+        @foreach(var shopUser in Model)
+        {
+            <tr>
+                <td>@shopUser.Id</td>
+                <td>@shopUser.Email</td>
+                <td>@shopUser.IsPrivatePerson</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@shopUser.Id">Edit</a> |
+                    <a asp-action="ChangePassword" asp-route-id="@shopUser.Id">Change Password</a> |
+                    <a asp-action="Delete" asp-route-id="@shopUser.Id">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+    
+</table>
