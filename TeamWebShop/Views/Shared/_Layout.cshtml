@@ -6,7 +6,8 @@
     <meta name="viewport" content="width=device-width">
     <title>@ViewBag.Title</title>
     <link href="~/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
-    <link href="~/css/style.css" rel="stylesheet" />
+	<link href="~/css/style.css" rel="stylesheet" />
+    <
 </head>
 <body>
     
@@ -15,9 +16,7 @@
         <div class="container">
             <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
                 <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
-                    <svg class="bi me-2 .text-warning" width="120" height="32" role="img" aria-label="Rozegro">
-                        @* <use xlink:href="#bootstrap"></use> *@
-                    </svg>
+                    <span class="brand-label">Rozegro</span>
                 </a>
 
                 <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
@@ -39,13 +38,13 @@
             </div>
         </div>
     </header>
-    <div id="main">
+    <div id="main" class="container-fluid">
         @RenderBody()
     </div>
 
     @* Footer *@
     <footer class="py-5">
-        <div class="row">
+        <div class="row container-fluid">
             <div class="col-6 col-md-2 mb-3">
                 <h5>Section</h5>
                 <ul class="nav flex-column">

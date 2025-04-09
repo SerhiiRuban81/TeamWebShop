@@ -7,7 +7,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 ///////////////////////
 //Addings
-string connStr = builder.Configuration.GetConnectionString("RozegroShopDb") ?? 
+string connStr = builder.Configuration.GetConnectionString("AivenDb") ?? 
     throw new InvalidCastException("Connection string not configured!");
 
 builder.Services.AddDbContext<ShopContext>(options => 
@@ -34,7 +34,7 @@ app.UseAuthentication();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Account}/{action=Index}/{id?}");
+    pattern: "{controller=Home}/{action=Index}/{id?}");
 
 
 /////////////////////////////

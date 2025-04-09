@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.General;
 using System.Drawing.Drawing2D;
 using ShopLibrary;
+using TeamWebShop.Models.DTOs.Admin;
 
 namespace TeamWebShop.Data
 {
@@ -10,6 +11,7 @@ namespace TeamWebShop.Data
     {
         public ShopContext(DbContextOptions<ShopContext> options) : base(options)
         { }
+
         public DbSet<Brand> Brands { get; set; }
 
         public DbSet<Category> Categories { get; set; }
@@ -17,5 +19,6 @@ namespace TeamWebShop.Data
         public DbSet<Product> Products { get; set; }
 
         public DbSet<ProductImage> Images { get; set; }
+        
     }
 }
