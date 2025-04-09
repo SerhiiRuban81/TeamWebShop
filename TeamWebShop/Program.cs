@@ -6,8 +6,6 @@ using TeamWebShop.Profiles;
 
 var builder = WebApplication.CreateBuilder(args);
 
-///////////////////////
-//Addings
 string connStr = builder.Configuration.GetConnectionString("AivenDb") ??
     throw new InvalidCastException("Connection string not configured!");
 
@@ -34,17 +32,10 @@ builder.Services.AddIdentity<ShopUser, IdentityRole>(
     .AddEntityFrameworkStores<ShopContext>();
 
 builder.Services.AddAutoMapper(typeof(UserProfile));
-
-
-////////////////////////////////
-
-
-
+builder.Services.AddAutoMapper(typeof(BrandProfile));
 
 var app = builder.Build();
 
-////////////////////////
-// Addings
 app.UseDefaultFiles();
 app.UseStaticFiles();
 app.UseAuthentication();
@@ -54,8 +45,7 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Account}/{action=Register}/{id?}");
+    pattern: "{controller=Home}/{action=Index}/{id?}");
 
 
-/////////////////////////////
 app.Run();

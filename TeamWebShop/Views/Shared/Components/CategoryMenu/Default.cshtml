@@ -1,0 +1,31 @@
+﻿@model IEnumerable<ShopLibrary.Category>
+@*
+    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@foreach (var category in Model)
+{
+    <li>
+        <a class="dropdown-item"
+           asp-controller="Categories"
+           asp-action="Details"
+           asp-route-id="@category.Id">
+            @category.CategoryName
+        </a>
+        @if (category.ChildCategories != null && category.ChildCategories.Any())
+        {
+            <ul>
+                @foreach (var childCategory in category.ChildCategories)
+                {
+                    <li>
+                        <a class="dropdown-item"
+                           asp-controller="Categories"
+                           asp-action="Details"
+                           asp-route-id="@childCategory.Id">
+                            @childCategory.CategoryName
+                        </a>
+                    </li>
+                }
+            </ul>
+        }
+    </li>
+}

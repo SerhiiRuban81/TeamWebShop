@@ -17,6 +17,6 @@ namespace ShopLibrary
         [Display(Name = "Country")]
         public string Country { get; set; } = default!;
 
-        public ICollection<Product> Products { get; set; } = default!;
+        public ICollection<Product>? Products { get; set; } = default!;
     }
 }
