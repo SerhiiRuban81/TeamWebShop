@@ -43,10 +43,7 @@
 
             
             let resp = await fetch(`/productimages/getproducts?brandId=${brandId}&categoryId=${categoryId}`, {
-                method: "GET",
-                    headers: {
-                    "Authorization": "Bearer YOUR_TOKEN_HERE"  // Include this line if necessary
-                }
+                method: "GET"
             });
             
 
