@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using ShopLibrary;
 using TeamWebShop.Models.DTOs.Products;
 
 namespace TeamWebShop.Profiles
@@ -7,8 +8,7 @@ namespace TeamWebShop.Profiles
     {
         public ProductProfile()
         {
-            CreateMap<ProductProfile, ProductDTO>()
-                .ReverseMap();
+            CreateMap<Product, ProductDTO>().ReverseMap();
         }
     }
 }

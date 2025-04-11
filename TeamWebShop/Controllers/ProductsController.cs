@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ShopLibrary;
 using TeamWebShop.Data;
+using TeamWebShop.Models.DTOs.Products;
 using TeamWebShop.Models.ViewModels.Products;
 
 namespace TeamWebShop.Controllers
@@ -17,8 +18,7 @@ namespace TeamWebShop.Controllers
         private readonly ShopContext _context;
         private readonly IMapper mapper;
 
-        public ProductsController(ShopContext context,
-            IMapper mapper)
+        public ProductsController(ShopContext context, IMapper mapper)
         {
             _context = context;
             this.mapper = mapper;
@@ -42,6 +42,7 @@ namespace TeamWebShop.Controllers
             var product = await _context.Products
                 .Include(p => p.Brand)
                 .Include(p => p.Category)
+                .Include(p => p.ProductImages)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (product == null)
             {
@@ -54,12 +55,13 @@ namespace TeamWebShop.Controllers
         // GET: Products/Create
         public IActionResult Create()
         {
-            CreateProductVM vM = new CreateProductVM()
+            CreateProductVM viewModel = new CreateProductVM
             {
                 Categories = new SelectList(_context.Categories, "Id", "CategoryName"),
                 Brands = new SelectList(_context.Brands, "Id", "BrandName"),
             };
-            return View(vM);
+
+            return View(viewModel);
         }
 
         // POST: Products/Create
@@ -67,18 +69,21 @@ namespace TeamWebShop.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(CreateProductVM vM)
+        public async Task<IActionResult> Create(CreateProductVM viewModel)
         {
             if (ModelState.IsValid)
             {
-                Product product = mapper.Map<Product>(vM.ProductDTO);
-                _context.Products.Add(product);
+                Product product = mapper.Map<Product>(viewModel.ProductDTO);
+                _context.Add(product);
+
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            vM.Brands = new SelectList(_context.Brands, "Id", "BrandName", vM.ProductDTO.BrandId);
-            vM.Categories = new SelectList(_context.Categories, "Id", "CategoryName", vM.ProductDTO.CategoryId);
-            return View(vM);
+
+            viewModel.Brands = new SelectList(_context.Brands, "Id", "BrandName");
+            viewModel.Categories = new SelectList(_context.Categories, "Id", "CategoryName");
+
+            return View(viewModel);
         }
 
         // GET: Products/Edit/5
@@ -94,9 +99,15 @@ namespace TeamWebShop.Controllers
             {
                 return NotFound();
             }
-            ViewData["BrandId"] = new SelectList(_context.Brands, "Id", "BrandName", product.BrandId);
-            ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "CategoryName", product.CategoryId);
-            return View(product);
+
+            CreateProductVM viewModel = new CreateProductVM
+            {
+                ProductDTO = mapper.Map<ProductDTO>(product),
+                Brands = new SelectList(_context.Brands, "Id", "BrandName", product.BrandId),
+                Categories = new SelectList(_context.Categories, "Id", "CategoryName", product.CategoryId)
+            };
+
+            return View(viewModel);
         }
 
         // POST: Products/Edit/5
@@ -104,9 +115,9 @@ namespace TeamWebShop.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,ProductName,Description,Price,BrandId,CategoryId,Color,ProductModel")] Product product)
+        public async Task<IActionResult> Edit(int id, CreateProductVM viewModel)
         {
-            if (id != product.Id)
+            if (id != viewModel.ProductDTO.Id)
             {
                 return NotFound();
             }
@@ -115,12 +126,14 @@ namespace TeamWebShop.Controllers
             {
                 try
                 {
+                    Product product = mapper.Map<Product>(viewModel.ProductDTO);
                     _context.Update(product);
+
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ProductExists(product.Id))
+                    if (!ProductExists(viewModel.ProductDTO.Id))
                     {
                         return NotFound();
                     }
@@ -131,9 +144,11 @@ namespace TeamWebShop.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["BrandId"] = new SelectList(_context.Brands, "Id", "BrandName", product.BrandId);
-            ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "CategoryName", product.CategoryId);
-            return View(product);
+
+            viewModel.Brands = new SelectList(_context.Brands, "Id", "BrandName", viewModel.ProductDTO.BrandId);
+            viewModel.Categories = new SelectList(_context.Categories, "Id", "CategoryName", viewModel.ProductDTO.CategoryId);
+
+            return View(viewModel);
         }
 
         // GET: Products/Delete/5

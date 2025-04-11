@@ -1,4 +1,5 @@
-﻿@model ShopLibrary.Product
+﻿@using TeamWebShop.Models.ViewModels.Products
+@model CreateProductVM
 
 @{
     ViewData["Title"] = "Edit";
@@ -12,41 +13,41 @@
     <div class="col-md-4">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="ProductDTO.Id" />
             <div class="form-group">
-                <label asp-for="ProductName" class="control-label"></label>
-                <input asp-for="ProductName" class="form-control" />
-                <span asp-validation-for="ProductName" class="text-danger"></span>
+                <label asp-for="ProductDTO.ProductName" class="control-label"></label>
+                <input asp-for="ProductDTO.ProductName" class="form-control" />
+                <span asp-validation-for="ProductDTO.ProductName" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Description" class="control-label"></label>
-                <input asp-for="Description" class="form-control" />
-                <span asp-validation-for="Description" class="text-danger"></span>
+                <label asp-for="ProductDTO.Description" class="control-label"></label>
+                <input asp-for="ProductDTO.Description" class="form-control" />
+                <span asp-validation-for="ProductDTO.Description" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Price" class="control-label"></label>
-                <input asp-for="Price" class="form-control" />
-                <span asp-validation-for="Price" class="text-danger"></span>
+                <label asp-for="ProductDTO.Price" class="control-label"></label>
+                <input type="number" step="0.5" asp-for="ProductDTO.Price" class="form-control" />
+                <span asp-validation-for="ProductDTO.Price" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="BrandId" class="control-label"></label>
-                <select asp-for="BrandId" class="form-control" asp-items="ViewBag.BrandId"></select>
-                <span asp-validation-for="BrandId" class="text-danger"></span>
+                <label asp-for="ProductDTO.BrandId" class="control-label"></label>
+                <select asp-for="ProductDTO.BrandId" class="form-control" asp-items="@Model.Brands"></select>
+                <span asp-validation-for="ProductDTO.BrandId" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="CategoryId" class="control-label"></label>
-                <select asp-for="CategoryId" class="form-control" asp-items="ViewBag.CategoryId"></select>
-                <span asp-validation-for="CategoryId" class="text-danger"></span>
+                <label asp-for="ProductDTO.CategoryId" class="control-label"></label>
+                <select asp-for="ProductDTO.CategoryId" class="form-control" asp-items="@Model.Categories"></select>
+                <span asp-validation-for="ProductDTO.CategoryId" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Color" class="control-label"></label>
-                <input asp-for="Color" class="form-control" />
-                <span asp-validation-for="Color" class="text-danger"></span>
+                <label asp-for="ProductDTO.Color" class="control-label"></label>
+                <input type="color" asp-for="ProductDTO.Color" class="form-control" />
+                <span asp-validation-for="ProductDTO.Color" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="ProductModel" class="control-label"></label>
-                <input asp-for="ProductModel" class="form-control" />
-                <span asp-validation-for="ProductModel" class="text-danger"></span>
+                <label asp-for="ProductDTO.ProductModel" class="control-label"></label>
+                <input asp-for="ProductDTO.ProductModel" class="form-control" />
+                <span asp-validation-for="ProductDTO.ProductModel" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
@@ -59,3 +60,6 @@
     <a asp-action="Index">Back to List</a>
 </div>
 
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
