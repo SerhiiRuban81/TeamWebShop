@@ -2,11 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ShopLibrary;
 using TeamWebShop.Data;
+using TeamWebShop.Models.DTOs.ProductImages;
+using TeamWebShop.Models.DTOs.Users;
 using TeamWebShop.Models.ViewModels.ProductImages;
 
 namespace TeamWebShop.Controllers
@@ -14,10 +18,12 @@ namespace TeamWebShop.Controllers
     public class ProductImagesController : Controller
     {
         private readonly ShopContext _context;
+        private readonly IMapper mapper;
 
-        public ProductImagesController(ShopContext context)
+        public ProductImagesController(ShopContext context, IMapper mapper)
         {
             _context = context;
+            this.mapper = mapper;
         }
 
         // GET: ProductImages
@@ -118,13 +124,36 @@ namespace TeamWebShop.Controllers
                 return NotFound();
             }
 
-            var productImage = await _context.Images.FindAsync(id);
+            var productImage = await _context.Images.Include(p => p.Product).FirstOrDefaultAsync(m => m.Id == id);
             if (productImage == null)
             {
-                return NotFound();
+                return NotFound("Image not found!");
             }
-            ViewData["ProductId"] = new SelectList(_context.Products, "Id", "Description", productImage.ProductId);
-            return View(productImage);
+
+            var products = await _context.Products.ToListAsync();
+            var imageDTO = mapper.Map<ProductImageDTO>(productImage);
+            return View(imageDTO);
+
+            //if (id == null)
+            //{
+            //    return NotFound();
+            //}
+            //ProductImage? productImage = await _context.Images.FindAsync(id);
+            //if (productImage == null)
+            //{
+            //    return NotFound("Image not found!");
+            //}
+            //ProductImageDTO imageDTO = mapper.Map<ProductImageDTO>(productImage);
+            //return View(imageDTO);
+
+
+            //var productImage = await _context.Images.FindAsync(id);
+            //if (productImage == null)
+            //{
+            //    return NotFound();
+            //}
+            //ViewData["ProductId"] = new SelectList(_context.Products, "Id", "Description", productImage.ProductId);
+            //return View(productImage);
         }
 
         // POST: ProductImages/Edit/5
@@ -132,36 +161,83 @@ namespace TeamWebShop.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,ImageData,ProductId")] ProductImage productImage)
+        public async Task<IActionResult> Edit(ProductImageDTO imageDTO)
         {
-            if (id != productImage.Id)
+            if (!ModelState.IsValid)
             {
-                return NotFound();
+                return View(imageDTO);
             }
 
-            if (ModelState.IsValid)
+            var image = await _context.Images.FindAsync(imageDTO.Id);
+            if (image != null)
             {
-                try
+                if (imageDTO.ImageData != null && imageDTO.ImageData.Length > 0)
                 {
-                    _context.Update(productImage);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!ProductImageExists(productImage.Id))
+                    using (MemoryStream ms = new MemoryStream())
                     {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
+                        image.ImageData = ms.ToArray();
                     }
                 }
+
+                //image.ProductId = imageDTO.ProductId; // Update product ID
+                await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ProductId"] = new SelectList(_context.Products, "Id", "Description", productImage.ProductId);
-            return View(productImage);
+            else
+            {
+                ModelState.AddModelError(string.Empty, "Image not found!");
+            }
+
+            // If something goes wrong, display form again
+            return View(imageDTO);
+
+
+            //if (!ModelState.IsValid)
+            //{
+            //    return View(imageDTO);
+            //}
+            //ProductImage? image = await _context.Images.FindAsync(imageDTO.Id);
+            //if (image != null)
+            //{
+            //    image.ImageData = imageDTO.ImageData;                
+            //}
+            //else
+            //    ModelState.AddModelError(string.Empty, "User not found!");
+            //return View(imageDTO);
+
+
         }
+
+        //public async Task<IActionResult> Edit(int id, [Bind("Id,ImageData,ProductId")] ProductImage productImage)
+        //{
+        //    if (id != productImage.Id)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    if (ModelState.IsValid)
+        //    {
+        //        try
+        //        {
+        //            _context.Update(productImage);
+        //            await _context.SaveChangesAsync();
+        //        }
+        //        catch (DbUpdateConcurrencyException)
+        //        {
+        //            if (!ProductImageExists(productImage.Id))
+        //            {
+        //                return NotFound();
+        //            }
+        //            else
+        //            {
+        //                throw;
+        //            }
+        //        }
+        //        return RedirectToAction(nameof(Index));
+        //    }
+        //    ViewData["ProductId"] = new SelectList(_context.Products, "Id", "Description", productImage.ProductId);
+        //    return View(productImage);
+        //}
 
         // GET: ProductImages/Delete/5
         public async Task<IActionResult> Delete(int? id)
