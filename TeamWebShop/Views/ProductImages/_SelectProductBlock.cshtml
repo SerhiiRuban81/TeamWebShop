@@ -26,7 +26,6 @@
         <label asp-for="SelectedProductId" class="control-label"></label>
         <select class="form-select" asp-for="SelectedProductId"
                 asp-items="Model.Products">
-            <option value="@(null)"></option>
         </select>
     </div>
     <script>
@@ -53,12 +52,14 @@
 
             if (resp.ok === true) {
                 let text = await resp.text();
-                console.log("text: ", text);
+                // console.log("text: ", text);
                 let selectBlock = document.getElementById("selectBlock");
                 let tempDiv = document.createElement("div");
                 tempDiv.innerHTML = text;
+                console.log("tempdiv:", tempDiv);
                 if (selectBlock){
-                    selectBlock.replaceWith(tempDiv.firstChild);
+                    // selectBlock.replaceWith(tempDiv.firstChild);
+                    selectBlock.replaceWith(tempDiv.firstElementChild);
                 }
             }
             else{
