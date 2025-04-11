@@ -1,0 +1,78 @@
+﻿@using TeamWebShop.Models.ViewModels.ProductImages
+@model CreateImageVM
+
+@*
+    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@
+
+<div id="selectBlock">
+    <div class="mb-3">
+        <label asp-for="SelectedBrandId" class="control-label"></label>
+        <select class="form-select" asp-for="SelectedBrandId"
+                asp-items="Model.Brands"
+                onchange="getProducts(event)">
+            <option value="@(null)">All</option>
+        </select>
+    </div>
+    <div class="mb-3">
+        <label asp-for="SelectedCategoryId" class="control-label"></label>
+        <select class="form-select" asp-for="SelectedCategoryId"
+                asp-items="Model.Categories"
+                onchange="getProducts(event)">
+            <option value="@(null)">All</option>
+        </select>
+    </div>
+    <div class="mb-3">
+        <label asp-for="SelectedProductId" class="control-label"></label>
+        <select class="form-select" asp-for="SelectedProductId"
+                asp-items="Model.Products">
+            <option value="@(null)"></option>
+        </select>
+    </div>
+    <script>
+        async function getProducts(e) {
+            var brandSelector = document.querySelector("select[name=SelectedBrandId]");
+            var categorySelector = document.querySelector("select[name=SelectedCategoryId]");
+            let brandId = brandSelector.value;
+            let categoryId = categorySelector.value;
+            
+            // Variable to modify Product field, if no product selected
+            var productSelector = document.querySelector("select[name=SelectedProductId]");
+
+            console.log("brand Id", brandId);
+            console.log("category Id", categoryId);
+
+            
+            let resp = await fetch(`/productimages/getproducts?brandId=${brandId}&categoryId=${categoryId}`, {
+                method: "GET",
+                    headers: {
+                    "Authorization": "Bearer YOUR_TOKEN_HERE"  // Include this line if necessary
+                }
+            });
+            
+
+            if (resp.ok === true) {
+                let text = await resp.text();
+                console.log("text: ", text);
+                let selectBlock = document.getElementById("selectBlock");
+                let tempDiv = document.createElement("div");
+                tempDiv.innerHTML = text;
+                if (selectBlock){
+                    selectBlock.replaceWith(tempDiv.firstChild);
+                }
+            }
+            else{
+                    const errorText = await resp.text(); // Read the response body for error details
+                    console.error('Error response:', resp.status, errorText); // Log the status and error text
+            }
+                
+        }
+        // document.addEventListener("DOMContentLoaded", () => {
+        //     var brandSelector = document.querySelector("select[name=SelectedBrandId]");
+        //     var categorySelector = document.querySelector("select[name=SelectedCategoryId]");
+        //     console.log(brandSelector);
+        //     brandSelector.addEventListener("change", getProducts);
+        //     categorySelector.addEventListener("change", getProducts);
+        // });
+    </script>
+</div>

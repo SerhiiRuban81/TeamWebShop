@@ -58,14 +58,11 @@ namespace TeamWebShop.Controllers
             IEnumerable<Category> categories = await _context.Categories.ToListAsync();
             CreateImageVM vM = new CreateImageVM
             {
-                Brands = new SelectList(brands, "Id", nameof(Brand.BrandName),
-                selectedBrandId),
-                Categories = new SelectList(categories, "Id",
-                nameof(Category.CategoryName), selectedCategoryId),
+                Brands = new SelectList(brands, "Id", nameof(Brand.BrandName), selectedBrandId),
+                Categories = new SelectList(categories, "Id", nameof(Category.CategoryName), selectedCategoryId),
                 SelectedBrandId = selectedBrandId,
                 SelectedCategoryId = selectedCategoryId,
-                Products = new SelectList(products, "Id",
-                nameof(Product.ProductName)),
+                Products = new SelectList(products, "Id", nameof(Product.ProductName)),
             };
             return View(vM);
         }
@@ -79,7 +76,7 @@ namespace TeamWebShop.Controllers
         {
             if (ModelState.IsValid)
             {
-                foreach (IFormFile file in vM.Photos)
+                foreach(IFormFile file in vM.Photos)
                 {
                     using (MemoryStream ms = new MemoryStream())
                     {
