@@ -11,18 +11,18 @@ namespace TeamWebShop.Controllers
     public class UsersController : Controller
     {
         private readonly UserManager<ShopUser> userManager;
-        private readonly IMapper imapper;
+        private readonly Mapper mapper;
 
-        public UsersController(UserManager<ShopUser> userManager, IMapper imapper)
+        public UsersController(UserManager<ShopUser> userManager, Mapper mapper)
         {
             this.userManager = userManager;
-            this.imapper = imapper;
+            this.mapper = mapper;
         }
         public async Task<IActionResult> Index()
         {
             IEnumerable<ShopUser> users = await userManager.Users.
                  ToListAsync();
-            IEnumerable<UserDTO> userDTOs = imapper.Map<IEnumerable<UserDTO>>(users);
+            IEnumerable<UserDTO> userDTOs = mapper.Map<IEnumerable<UserDTO>>(users);
             return View(userDTOs);
         }
 
@@ -31,7 +31,7 @@ namespace TeamWebShop.Controllers
             if (id == null) return NotFound();
             ShopUser? user = await userManager.FindByIdAsync(id);
             if (user == null) return NotFound("user not found");
-            UserDTO userDTO = imapper.Map<UserDTO>(user);
+            UserDTO userDTO = mapper.Map<UserDTO>(user);
             return View(userDTO);
         }
         [HttpPost]
@@ -83,7 +83,7 @@ namespace TeamWebShop.Controllers
             if (id == null) return NotFound();
             ShopUser? email = await userManager.FindByIdAsync(id);
             if (email == null) return NotFound("User not found");
-            UserDTO userDTO = imapper.Map<UserDTO>(email);
+            UserDTO userDTO = mapper.Map<UserDTO>(email);
             return View(userDTO);
         }
         [HttpPost, ActionName("Delete")]
