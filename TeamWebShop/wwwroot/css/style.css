@@ -11,3 +11,50 @@ body>*{
 #main{
     flex-grow: 1;
 }
+
+
+/*Brand label style*/
+.brand-label {
+    font-family: sans-serif, Arial, Helvetica;
+    font-weight: bold;
+    padding: 25px;
+    font-size: 3.5vh;
+    color: rgb(255, 87, 51);
+}
+
+
+
+/*Brand span*/
+.brand-span {
+    font-family: sans-serif, Arial, Helvetica;
+    font-weight: bold;
+    color: rgb(255, 87, 51);
+}
+    
+/*
+    `primary-button` customization to make it `orange`
+*/
+.btn-primary {
+    background-color: rgb(255, 87, 51);
+    font-weight: bold;
+    border: 1px solid rgb(255, 87, 51);
+}
+
+.btn.btn-primary:hover {
+    background-color: #D34F07;
+    border: 1px solid rgb(255, 87, 51);
+} 
+
+
+
+/*Day theme*/
+body{
+    background-color: rgb(236, 239, 241);
+}
+
+header{
+    background-color: rgb(255, 255, 255);
+}
+/*Night theme*/
+
+
