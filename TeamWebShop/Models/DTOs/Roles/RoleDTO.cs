@@ -6,6 +6,6 @@ namespace TeamWebShop.Models.DTOs.Roles
     {
         public string Id { get; set; } = default!;
         [Display(Name = "Role Name")]
-        public string NameRole { get; set; } = default!;
+        public string Name { get; set; } = default!;
     }
 }
