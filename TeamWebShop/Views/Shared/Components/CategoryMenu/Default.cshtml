@@ -1,31 +1,92 @@
 ﻿@model IEnumerable<ShopLibrary.Category>
 @*
     For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+
 *@
-@foreach (var category in Model)
-{
-    <li>
-        <a class="dropdown-item"
-           asp-controller="Categories"
-           asp-action="Details"
-           asp-route-id="@category.Id">
-            @category.CategoryName
-        </a>
-        @if (category.ChildCategories != null && category.ChildCategories.Any())
+<style>
+    .mega-menu {
+        max-width: 100%;
+        position: relative;
+    }
+
+    .child-categories {
+        display: none;
+        position: absolute;
+        top: 0;
+        left: 50%;
+        z-index: 100;
+        list-style-type: none;
+        width: 250px;
+    }
+        .main-category-item.active > .child-categories,
+        .main-category-item:hover > .child-categories
         {
-            <ul>
-                @foreach (var childCategory in category.ChildCategories)
-                {
-                    <li>
-                        <a class="dropdown-item"
-                           asp-controller="Categories"
-                           asp-action="Details"
-                           asp-route-id="@childCategory.Id">
-                            @childCategory.CategoryName
-                        </a>
-                    </li>
-                }
-            </ul>
+            display: block;
         }
-    </li>
-}
+</style>
+
+<div class="mega-menu d-flex position-relative" style="width: 100%;">
+    <ul class="main-category-list list-unstyled m-0 p-2" style="min-width: 250px;">
+        @foreach (var category in Model.Where(c => c.ParentCategoryId == null))
+        {
+            <li class="main-category-item py-2 px-3" data-category-id="@category.Id">
+                <a class="dropdown-item"
+                   asp-controller="Categories"
+                   asp-action="Details"
+                   asp-route-id="@category.Id">
+                    @category.CategoryName
+                </a>
+                @if (category.ChildCategories != null && category.ChildCategories.Any())
+                {
+                    <div class="child-categories" id="child-cat-@category.Id">
+                        <ul class="list-unstyled m-0 p-2">
+                            @foreach (var childCategory in category.ChildCategories)
+                            {
+                                <li class="py-2 px-1">
+                                    <a class="dropdown-item"
+                                       asp-controller="Categories"
+                                       asp-action="ProductsByCategoryChild"
+                                       asp-route-id="@childCategory.Id">
+                                        @childCategory.CategoryName
+                                    </a>
+                                </li>
+                            }
+                        </ul>
+                    </div>
+                }
+            </li>
+        }
+    </ul>
+</div>
+
+<script>
+    alert("JavaScript працює!");
+    document.addEventListener("DOMContentLoaded", function () {
+        const parentItems = document.querySelectorAll(".main-category-item");
+        const childBlocks = document.querySelectorAll(".child-categories");
+
+        parentItems.forEach(item => {
+            item.addEventListener("mouseenter", () => {
+                parentItems.forEach(i => i.classList.remove("active"));
+                item.classList.add("active");
+                const categoryId = item.getAttribute("data-category-id");
+                const childBlock = document.getElementById("child-cat-" + categoryId);
+                if (childBlock) {
+                    childBlock.classList.add("active");
+                }
+            });
+        });
+
+        if (parentItems.length > 0) {
+            const firstItem = parentItems[0];
+            firstItem.classList.add("active");
+
+            const firstCategoryId = firstItem.getAttribute("data-category-id");
+            const firstChildBlock = document.getElementById("child-cat-" + firstCategoryId);
+
+            if (firstChildBlock) {
+                firstChildBlock.classList.add("active");
+            }
+       }
+    });
+</script>

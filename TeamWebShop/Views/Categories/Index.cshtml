@@ -7,9 +7,12 @@
 }
 <div style="margin: 2rem;">
     <h1>Category</h1>
+    @* @if (User.Identity != null && User.IsInRole("manager")) *@
+    @* { *@
     <p>
         <a asp-action="Create">Create New Category</a>
     </p>
+    @* } *@
     <table class="table table-striped table-bordered">
         <thead class="table-dark">
             <tr>
@@ -27,9 +30,12 @@
                     <td>@Html.DisplayFor(modelItem => item.CategoryName)</td>
                     <td> @(item.ParentCategory != null ? item.ParentCategory.CategoryName : "Немає")</td>
                     <td>
-                        <a class="btn btn-sm btn-warning" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
-                        <a class="btn btn-sm btn-info" asp-action="Details" asp-route-id="@item.Id">Details</a>
-                        <a class="btn btn-sm btn-danger" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                        @* @if (User.Identity != null && User.IsInRole("manager")) *@
+                        @* { *@
+                            <a class="btn btn-sm btn-warning" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                            <a class="btn btn-sm btn-info" asp-action="Details" asp-route-id="@item.Id">Details</a>
+                            <a class="btn btn-sm btn-danger" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                        @* } *@
                     </td>
                 </tr>
             }

@@ -1,0 +1,25 @@
+﻿@using TeamWebShop.Models.ViewModels.Roles
+@model ChangeRoleVM
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+<h1>Change roles user @(Model.Email)?</h1>
+<br />
+<br />
+<form method="post">
+	<input type="hidden" asp-for="Id" />
+	@foreach (var role in Model.ListRoles!)
+	{
+		<input type="checkbox" name ="roles[]" value="@role.Name"@(Model.UserRoles!.Contains(role.Name!)
+		? "chacked" : "")/>
+		<span>@role.Name</span>
+
+		<br />
+	}
+	<div class="mb-3">
+		<button type="submit" class="btn btn-outline-warning">Save</button>
+	</div>
+</form>
+
