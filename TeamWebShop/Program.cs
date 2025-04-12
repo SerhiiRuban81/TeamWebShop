@@ -31,7 +31,14 @@ builder.Services.AddIdentity<ShopUser, IdentityRole>(
     })
     .AddEntityFrameworkStores<ShopContext>();
 
+
+
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddSession();
+builder.Services.AddDistributedMemoryCache();
+
 builder.Services.AddAutoMapper(typeof(UserProfile), typeof(RoleProfile), typeof(BrandProfile));
+
 
 
 var app = builder.Build();
@@ -40,7 +47,7 @@ app.UseDefaultFiles();
 app.UseStaticFiles();
 app.UseAuthentication();
 app.UseAuthorization();
-
+app.UseSession();
 
 
 app.MapControllerRoute(

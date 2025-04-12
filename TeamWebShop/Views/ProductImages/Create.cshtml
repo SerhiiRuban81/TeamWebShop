@@ -1,0 +1,34 @@
+﻿@using TeamWebShop.Models.ViewModels.ProductImages
+@model CreateImageVM
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>ProductImage</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            @await Html.PartialAsync("_SelectProductBlock", Model)
+            <div class="mb-3">
+                <label asp-for="Photos" class="control-label"></label>
+                <input type="file" asp-for="Photos" class="form-control"
+                       multiple accept="image/*" />
+                <span asp-validation-for="Photos" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+

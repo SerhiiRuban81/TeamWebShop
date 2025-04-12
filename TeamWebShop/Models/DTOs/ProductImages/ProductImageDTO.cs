@@ -1,6 +1,7 @@
 ﻿using ShopLibrary;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using TeamWebShop.Models.DTOs.Products;
 
 namespace TeamWebShop.Models.DTOs.ProductImages
 {
@@ -13,5 +14,8 @@ namespace TeamWebShop.Models.DTOs.ProductImages
 
         [Display(Name = "Product")]
         public int ProductId { get; set; }
+
+        [Display(Name = "Product")]
+        public ProductDTO? Product { get; set; } = default!;
     }
 }
