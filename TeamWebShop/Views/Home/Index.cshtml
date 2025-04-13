@@ -1,4 +1,7 @@
-﻿@*
+﻿@using TeamWebShop.Models.ViewModels.Home
+@model HomeIndexVM
+
+@*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
 @{
@@ -7,3 +10,16 @@
     <span class="brand-span">Rozegro</span>
     <span>inspiring the life...</span>
 </h3>
+
+<h1>Products Catalogue</h1>
+
+@if (Model.Products!.Any())
+{
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3">
+        <div class="col">
+
+        </div>
+    </div>
+}
+
+@* @2.4043  *@
