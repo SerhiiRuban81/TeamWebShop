@@ -6,6 +6,7 @@ using ShopLibrary;
 using TeamWebShop.Models.DTOs.Admin;
 using TeamWebShop.Models.DTOs.Users;
 using TeamWebShop.Models.ViewModels.Users;
+using TeamWebShop.Models.DTOs.Roles;
 
 namespace TeamWebShop.Data
 {
@@ -20,7 +21,8 @@ namespace TeamWebShop.Data
         public DbSet<Product> Products { get; set; }
 
         public DbSet<ProductImage> Images { get; set; }
-        public DbSet<TeamWebShop.Models.DTOs.Users.UserDTO> UserDTO { get; set; } = default!;
+        
+        
        
        
        

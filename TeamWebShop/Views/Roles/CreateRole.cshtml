@@ -1,0 +1,36 @@
+﻿@model string
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+<h1>Create new role</h1>
+<br />
+<br />
+<form asp-action="CreateRole" method="post" class="link-warning">
+    <div class="mb-3">
+        <label for="roleName">Role name</label>
+        <input type="text" name="roleName" id="roleName" required/>
+
+    </div>
+	<div class="mb-3">
+		<button type="submit" class="btn btn-outline-warning">Create</button>
+	</div>
+		
+</form>
+@section Scripts {
+	@{
+		await Html.RenderPartialAsync("_ValidationScriptsPartial");
+	}
+	@* <script> *@
+	@* 	$(document).ready(function () { *@
+	@* 		$('#roleName').on('input', function () { *@
+	@* 			var input = $(this).val(); *@
+	@* 			var isValid = /^[a-zA-Z_]+$/.test(input); *@
+	@* 			if (!isValid) { *@
+	@* 				alert('Role name can only contain letters and underscores.'); *@
+	@* 			} *@
+	@* 		}); *@
+	@* 	}); *@
+	@* </script> *@
+}

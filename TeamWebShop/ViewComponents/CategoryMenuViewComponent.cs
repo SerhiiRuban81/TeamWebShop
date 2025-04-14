@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using TeamWebShop.Data;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Http.HttpResults;
 
 
 namespace TeamWebShop.ViewComponents
@@ -17,10 +18,11 @@ namespace TeamWebShop.ViewComponents
         public async Task<IViewComponentResult> InvokeAsync()
         {
             var categories = await _context.Categories
-                .Where(c => c.ParentCategory == null)
-                .Include(p => p.ParentCategory)
-                .Include(c=> c.ChildCategories).ToListAsync();
+               .Where(c => c.ParentCategory == null)
+               .Include(p => p.ParentCategory)
+               .Include(c => c.ChildCategories).ToListAsync();
             return View(categories);
         }
+       
     }
 }

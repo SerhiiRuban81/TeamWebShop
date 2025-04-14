@@ -11,39 +11,54 @@
 <body>
 
     @* Header *@
-    <header class="p-3 text-bg-dark">
+    <header class="p-3 text-bg-light">
         <div class="container-fluid">
             <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
-                <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
-                    <svg class="bi me-2 .text-warning" width="120" height="32" role="img" aria-label="Rozegro">
-                        @* <use xlink:href="#bootstrap"></use> *@
-                    </svg>
+                <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-dark text-decoration-none">
+                    <span class="brand-label">Rozegro</span>
                 </a>
 
                 <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
                     <li><a asp-action="Index" asp-controller="Home" class="nav-link px-2 text-white">Home</a></li>
                     <li><a asp-action="Index" asp-controller="Products" class="nav-link px-2 text-white">Products</a></li>
                     <li><a asp-action="Index" asp-controller="Brands" class="nav-link px-2 text-white">Brands</a></li>
+
                     <li class="nav-item dropdown">
+                        <a class="nav-link text-dark dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">Category</a>
                         <a class="nav-link text-white dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">Category</a>
-                        <ul class="dropdown-menu">
+                        <ul class="dropdown-menu" style="min-width: 40vw;">
                             @await Component.InvokeAsync("CategoryMenu")
                         </ul>
-                    </li>
+                    </li>                    
+                    <li><a asp-action="Index" asp-controller="ProductImages" class="nav-link px-2 text-dark">Images</a></li>
+                    
+                    @if (User.Identity != null && User.IsInRole("admin"))
+                    {
+                        <li>
+                            <a asp-action="Index" asp-controller="Users"
+                               class="nav-link px-2 text-dark">Users</a>
+                        </li>
+                        <li>
+                            <a asp-action="Index" asp-controller="Roles"
+                               class="nav-link px-2 text-dark">Roles</a>
+                        </li>
+                    }
+                
+                
                 </ul>
                 <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search">
-                    <input type="search" class="form-control form-control-dark text-bg-dark" placeholder="Search..." aria-label="Search">
+                    <input type="search" class="form-control form-control-dark text-bg-light" placeholder="Search..." aria-label="Search">
                 </form>
 
                 <div class="text-end">
 					@if (User.Identity != null && User.Identity.IsAuthenticated)
 					{
                         <span class="me-2">Hello, @User.Identity.Name</span>
-						<a asp-action="Logout" asp-controller="Account" class="btn btn-outline-light me-2">Logout</a>
+                        <a asp-action="Logout" asp-controller="Account" class="btn btn-outline-secondary me-2">Logout</a>
 					}
 					else
 					{
-                        <a asp-action="Login" asp-controller="Account" class="btn btn-outline-light me-2">Login</a>
+                        <a asp-action="Login" asp-controller="Account" class="btn btn-outline-secondary me-2">Login</a>
                         <a asp-action="Register" asp-controller="Account" class="btn btn-warning">Sign-up</a>
 					}
                     
@@ -61,35 +76,14 @@
             <div class="col-6 col-md-2 mb-3">
                 <h5>Section</h5>
                 <ul class="nav flex-column">
-                    <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">Home</a></li>
-                    <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">Features</a></li>
-                    <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">Pricing</a></li>
-                    <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">FAQs</a></li>
+                    <li class="nav-item mb-2"><a asp-action="Index" asp-controller="Home" class="nav-link p-0 text-body-secondary">Home</a></li>
+                    @* <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">Features</a></li> *@
+                    @* <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">Pricing</a></li> *@
+                    @* <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">FAQs</a></li> *@
                     <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">About</a></li>
                 </ul>
             </div>
 
-            <div class="col-6 col-md-2 mb-3">
-                <h5>Section</h5>
-                <ul class="nav flex-column">
-                    <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">Home</a></li>
-                    <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">Features</a></li>
-                    <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">Pricing</a></li>
-                    <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">FAQs</a></li>
-                    <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">About</a></li>
-                </ul>
-            </div>
-
-            <div class="col-6 col-md-2 mb-3">
-                <h5>Section</h5>
-                <ul class="nav flex-column">
-                    <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">Home</a></li>
-                    <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">Features</a></li>
-                    <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">Pricing</a></li>
-                    <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">FAQs</a></li>
-                    <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">About</a></li>
-                </ul>
-            </div>
 
             <div class="col-md-5 offset-md-1 mb-3">
                 <form>
@@ -105,7 +99,7 @@
         </div>
 
         <div class="d-flex flex-column flex-sm-row justify-content-between py-4 my-4 border-top">
-            <p>© 2025 Company, Inc. All rights reserved.</p>
+            <p>© @DateTime.Now.Year PV312TeamCompany, Inc. All rights reserved.</p>
             <ul class="list-unstyled d-flex">
                 <li class="ms-3"><a class="link-body-emphasis" href="#" aria-label="Instagram"><svg class="bi" width="24" height="24"><use xlink:href="#instagram"></use></svg></a></li>
                 <li class="ms-3"><a class="link-body-emphasis" href="#" aria-label="Facebook"><svg class="bi" width="24" height="24" aria-hidden="true"><use xlink:href="#facebook"></use></svg></a></li>

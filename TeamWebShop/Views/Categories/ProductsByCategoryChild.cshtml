@@ -1,0 +1,83 @@
+﻿@model ProductsCategoriesVM
+@using TeamWebShop.Models.ViewModels.Products
+@*
+    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@
+<h2>Products in category: @(Model.Products?.FirstOrDefault()?.Category?.CategoryName ?? "Not found")</h2>
+
+<div style="margin:20px" class="container">
+    @if (Model.Products != null && Model.Products.Any())
+    {
+
+        <div class="row row-cols-1 row-cols-md-3 g-4">
+            @foreach (var item in Model.Products)
+            {
+                <div class="col">
+                    <div class="card h-100">
+                        @if (item.ProductImages != null && item.ProductImages.Any())
+                        {
+                            var firstImage = item.ProductImages.FirstOrDefault();
+                            if (firstImage != null)
+                            {
+                                <img src="data:image/*;base64,@(Convert.ToBase64String(firstImage.ImageData))"
+                                     alt="@item.ProductName"
+                                     class="card-img-top"
+                                     style="object-fit: contain; max-height: 200px; margin-top:10px;" />
+                            }
+                        }
+                        else
+                        {
+                            <p class="text-center">No Image Available</p>
+                        }
+
+                        <div class="card-body">
+                            <h5 class="card-title">@item.ProductName</h5>
+                            <p class="card-text"><strong>Description:</strong> @item.Description</p>
+                            <h5 class="card-title"><strong>Price:</strong> @item.Price</h5>
+                            <h5 class="card-title"><strong>Brand Name:</strong> @item.Brand.BrandName</h5>
+                            <h5 class="card-title"><strong>Category:</strong> @item.Category.CategoryName</h5>
+                        </div>
+
+                        <div class="card-footer text-center">
+                            @if (User.Identity != null && User.IsInRole("manager"))
+                            {
+                                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning btn-sm">Edit</a>
+                                <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-primary btn-sm">Details</a>
+                                <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger btn-sm">Delete</a>
+                            }
+                            else if (User.Identity != null)
+                            {
+                                <a asp-action="Details" asp-controller="Products" asp-route-id="@item.Id" class="btn btn-primary btn-sm">Details</a>
+                            }
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+        <div class="d-flex justify-content-center mt-4">
+            <nav aria-label="Page navigation example">
+                <ul class="pagination justify-content-center">
+                    @for (int i = 1; i <= Model.TotalPages; i++)
+                    {
+                        <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
+                            <a class="page-link"
+                               asp-action="ProductsByCategoryChild"
+                               asp-route-page="@i"
+                               asp-route-id="@Model.Products.FirstOrDefault()?.CategoryId">@i</a>
+                        </li>
+
+                    }
+                   
+                </ul>
+                @if (Model.Products?.FirstOrDefault()?.Category?.ParentCategoryId != null)
+                {
+                    <a class="btn btn-sm btn-info mb-3"
+                       asp-action="ShowCategoryParent"
+                       asp-route-id="@Model.Products.FirstOrDefault()?.Category.ParentCategoryId">
+                        Back to category
+                    </a>
+                }
+            </nav>
+        </div>
+    }
+</div>
