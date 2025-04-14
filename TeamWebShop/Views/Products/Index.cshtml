@@ -1,0 +1,58 @@
+@model IEnumerable<ShopLibrary.Product>
+
+@{
+    ViewData["Title"] = "Product Catalog";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h2>@ViewData["Title"]</h2>
+    <a asp-action="Create" class="btn btn-success"><i class="bi bi-plus-circle"></i> Add new product</a>
+</div>
+
+<div class="row mb-4">
+    <div class="col">
+        <form method="get" class="d-flex">
+            <input type="text" name="searchTerm" class="form-control me-2" placeholder="Find products...">
+            <button type="submit" class="btn btn-outline-primary">Find</button>
+        </form>
+    </div>
+</div>
+
+<div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 g-4">
+    @foreach (var product in Model)
+    {
+        <div class="col">
+            <div class="card h-100 shadow-sm border-0">
+                <div class="position-relative">
+                    <img src="/Products/GetImage/@product.Id" class="card-img-top" alt="Product Image" style="height: 200px; object-fit: contain;"/>
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title text-truncate">@product.ProductName</h5>
+                    <p class="card-text text-muted">@product.Description</p>
+                    <p class="card-text"><strong>Price:</strong> @product.Price $</p>
+                    <p class="card-text"><strong>Brand:</strong> @product.Brand.BrandName</p>
+                    <p class="card-text"><strong>Color: </strong> @product.Color</p>
+                    <p class="card-text"><strong>Category:</strong> @product.Category.CategoryName</p>
+                </div>
+                <div class="card-footer bg-white border-0 d-flex justify-content-between">
+                    <a asp-action="Details" asp-route-id="@product.Id" class="btn btn-primary btn-sm">
+                        More
+                    </a>
+                    <form asp-action="Delete" method="post" class="d-inline">
+                        <input type="hidden" name="id" value="@product.Id" />
+                        <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Ви впевнені, що хочете видалити цей товар?');">
+                            Delete
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+@if (!Model.Any())
+{
+    <div class="alert alert-info mt-4">
+        <p class="mb-0">Products not found.</p>
+    </div>
+}
