@@ -1,0 +1,27 @@
+@model ShopLibrary.Product
+
+<div class="card product-card h-100 shadow-sm">
+    <img src="/Products/GetImage/@Model.Id" class="card-img-top" alt="Product Image" style="height: 300px; object-fit: contain;"/>
+    <div class="card-body d-flex flex-column">
+        <h5 class="card-title">@Model.ProductName</h5>
+        <p class="card-text text-muted">@Model.Brand.BrandName</p>
+        @if (!string.IsNullOrEmpty(Model.ProductModel))
+        {
+            <p class="card-text"><strong>Model: </strong> @Model.ProductModel</p>
+        }
+        @if (!string.IsNullOrEmpty(Model.Color))
+        {
+            <p class="card-text"><strong>Color: </strong> @Model.Color</p>
+        }
+        <p class="card-text text-truncate">@Model.Description</p>
+        <div class="mt-auto">
+            <p class="h4 text-primary mb-3">@Model.Price.ToString("C")</p>
+            <div class="d-flex justify-content-between">
+                <a href="/Products/Details/@Model.Id" class="btn btn-outline-primary">More</a>
+                <button class="btn btn-primary add-to-cart" data-product-id="@Model.Id">
+                    <i class="bi bi-cart-plus"></i> Add to cart
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

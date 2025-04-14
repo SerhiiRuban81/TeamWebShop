@@ -39,20 +39,16 @@ builder.Services.AddDistributedMemoryCache();
 
 builder.Services.AddAutoMapper(typeof(UserProfile), typeof(RoleProfile), typeof(BrandProfile));
 
-
-
 var app = builder.Build();
 
 app.UseDefaultFiles();
 app.UseStaticFiles();
 app.UseAuthentication();
 app.UseAuthorization();
-app.UseSession();
-
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=Home}/{action=Index}/{id?}", "{controller=Products}/{action=Index}/{id?}");
 
 
 app.Run();
