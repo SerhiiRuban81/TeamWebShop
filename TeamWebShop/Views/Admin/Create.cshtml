@@ -1,0 +1,23 @@
+﻿@model TeamWebShop.Models.DTOs.Admins.AdminDTO
+
+<h1>Create Admin</h1>
+<form asp-action="Create" method="post">
+    <div class="form-group">
+        <label asp-for="Email" class="control-label"></label>
+        <input asp-for="Email" class="form-control" />
+        <span asp-validation-for="Email" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Role" class="control-label"></label>
+        <input asp-for="Role" class="form-control" />
+        <span asp-validation-for="Role" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Permissions" class="control-label"></label>
+        <textarea asp-for="Permissions" class="form-control"></textarea>
+        <span asp-validation-for="Permissions" class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-primary">Create</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+</form>
+

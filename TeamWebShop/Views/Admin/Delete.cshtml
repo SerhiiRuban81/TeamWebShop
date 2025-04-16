@@ -1,0 +1,18 @@
+﻿@model TeamWebShop.Models.DTOs.Admins.AdminDTO
+
+<h1>Delete Admin</h1>
+<p>Are you sure you want to delete this admin?</p>
+
+<div>
+    <p><strong>ID:</strong> @Model.Id</p>
+    <p><strong>Email:</strong> @Model.Email</p>
+    <p><strong>Role:</strong> @Model.Role</p>
+    <p><strong>Permissions:</strong> @(Model.Permissions != null ? string.Join(", ", Model.Permissions) : "None")</p>
+</div>
+
+<form asp-action="Delete" method="post">
+    <input type="hidden" asp-for="Id" />
+    <button type="submit" class="btn btn-danger">Delete</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+</form>
+

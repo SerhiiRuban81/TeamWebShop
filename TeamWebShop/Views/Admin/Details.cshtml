@@ -1,0 +1,10 @@
+﻿@model TeamWebShop.Models.DTOs.Admins.AdminDTO
+
+<h1>Admin Details</h1>
+<div>
+    <p><strong>ID:</strong> @Model.Id</p>
+    <p><strong>Email:</strong> @Model.Email</p>
+    <p><strong>Role:</strong> @Model.Role</p>
+    <p><strong>Permissions:</strong> @(Model.Permissions != null ? string.Join(", ", Model.Permissions) : "None")</p>
+</div>
+<a asp-action="Index" class="btn btn-secondary">Back to List</a>
