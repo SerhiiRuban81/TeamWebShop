@@ -88,6 +88,45 @@ namespace TeamWebShop.Controllers
             vM.Email = user.Email;
             return View(vM);
         }
+        public async Task<IActionResult> Edit(string? id)
+        {
+            if (id == null) return NotFound();
+            IdentityRole? role = await roleManager.FindByIdAsync(id);
+            if (role == null) return NotFound();
+            RoleDTO roleDTO = mapper.Map<RoleDTO>(role);
+            return View(roleDTO);
+        }
+        [HttpPost, ActionName("Edit")]
+        public async Task<IActionResult> EditConfirmed(RoleDTO roleDTO)
+        {
+            if (!ModelState.IsValid) return View(roleDTO);
+            IdentityRole? role = await roleManager.FindByIdAsync(roleDTO.Id.ToString());
+            if (role == null) return NotFound();
+            role.Name = roleDTO.Name;
+            IdentityResult result = await roleManager.UpdateAsync(role);
+            if (result.Succeeded)
+                return RedirectToAction("Index");
+            foreach (var error in result.Errors)
+                ModelState.AddModelError(string.Empty, error.Description);
+            return View(roleDTO);
+        }
+        public async Task<IActionResult> Delete(string? id)
+        {
+            if (id == null) return NotFound();
+            IdentityRole? role = await roleManager.FindByIdAsync(id);
+            if (role == null) return NotFound();
+            RoleDTO roleDTO = mapper.Map<RoleDTO>(role);
+            return View(roleDTO);
+        }
+        [HttpPost, ActionName("Delete")]
+        public async Task<IActionResult> DeleteConfirmed(string? id)
+        {
+            if (id == null) return NotFound();
+            IdentityRole? role = await roleManager.FindByIdAsync(id);
+            if (role == null) return NotFound();
+            await roleManager.DeleteAsync(role);
+            return RedirectToAction("Index");
+        }
 
     }
 }

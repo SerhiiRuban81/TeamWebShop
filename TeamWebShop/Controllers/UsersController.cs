@@ -11,9 +11,9 @@ namespace TeamWebShop.Controllers
     public class UsersController : Controller
     {
         private readonly UserManager<ShopUser> userManager;
-        private readonly Mapper mapper;
+        private readonly IMapper mapper;
 
-        public UsersController(UserManager<ShopUser> userManager, Mapper mapper)
+        public UsersController(UserManager<ShopUser> userManager, IMapper mapper)
         {
             this.userManager = userManager;
             this.mapper = mapper;
