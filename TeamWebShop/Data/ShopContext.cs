@@ -21,6 +21,7 @@ namespace TeamWebShop.Data
         public DbSet<Product> Products { get; set; }
 
         public DbSet<ProductImage> Images { get; set; }
+       
         
         
        
