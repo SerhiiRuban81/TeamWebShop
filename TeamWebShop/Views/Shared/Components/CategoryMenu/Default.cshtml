@@ -32,7 +32,7 @@
             <li class="main-category-item py-2 px-3" data-category-id="@category.Id">
                 <a class="dropdown-item"
                    asp-controller="Categories"
-                   asp-action="Details"
+                   asp-action="ShowCategoryParent"
                    asp-route-id="@category.Id">
                     @category.CategoryName
                 </a>
@@ -60,7 +60,6 @@
 </div>
 
 <script>
-    alert("JavaScript працює!");
     document.addEventListener("DOMContentLoaded", function () {
         const parentItems = document.querySelectorAll(".main-category-item");
         const childBlocks = document.querySelectorAll(".child-categories");

@@ -1,0 +1,65 @@
+﻿@model TeamWebShop.Models.ViewModels.Categories.ShowCategoryVM
+@*
+    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@
+
+<div style="background-color: #ebeff2; overflow-x:hidden; height:60vh; width: 100vw; margin-left: calc(-50vw + 49.3%);">
+    @if (Model.ParentCategory != null)
+    {
+        <h2 class="text-center mb-4 m-2 p-2">@Model.ParentCategory.CategoryName</h2>
+    }
+    <div style="position:relative;">
+        <div style="background-color:#92307d; width:100%; height:100px">          
+        </div>
+        <div style="width: 100vw; height: 250px; position:absolute; top: -10px;">
+            @if (Model.Categories != null && Model.Categories.Any())
+            {
+                <div class="row row-cols-1 row-cols-md-4 g-4 p-5">
+                    @foreach (var category in Model.Categories)
+                    {
+                        <div class="col" style="width: 13rem;">
+                            <div class="card h-100 w-100">
+                                @if (category.ImageData != null)
+                                {
+                                    <img src="data:image/*;base64,@(Convert.ToBase64String(category.ImageData))"
+                                         alt="@category.CategoryName"
+                                         class="card-img-top"
+                                         style="object-fit: contain; height: 120px;" />
+                                }
+                                else
+                                {
+                                    <div style="height: 120px; background-color: #e9ecef;"
+                                         class="d-flex align-items-center justify-content-center">
+                                        <span class="text-muted">No Image</span>
+                                    </div>
+                                }
+                            </div>
+                            <div class="card-body text-center">
+                                <a class="card-link text-decoration-none " asp-controller="Categories"
+                                   asp-action="ProductsByCategoryChild"
+                                   asp-route-id="@category.Id">
+                                    @category.CategoryName
+                                </a>
+                            </div>
+                        </div>
+                    }
+                </div>
+                <div class="d-flex justify-content-center mt-4">
+                    <nav aria-label="Page navigation example">
+                        <ul class="pagination justify-content-center">
+                            @for (int i = 1; i <= Model.TotalPages; i++)
+                            {
+                                <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
+                                    <a class="page-link"
+                                       asp-action="ShowCategoryParent"
+                                       asp-route-page="@i"
+                                       asp-route-id="@Model..FirstOrDefault()?.CategoryId">@i</a>
+                                </li>
+                            }
+                        </ul>
+                    </nav>
+                </div>
+            }
+        </div>
+    </div>
+</div>

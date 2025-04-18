@@ -8,6 +8,7 @@
 <div style="margin:20px" class="container">
     @if (Model.Products != null && Model.Products.Any())
     {
+
         <div class="row row-cols-1 row-cols-md-3 g-4">
             @foreach (var item in Model.Products)
             {
@@ -37,18 +38,18 @@
                             <h5 class="card-title"><strong>Category:</strong> @item.Category.CategoryName</h5>
                         </div>
 
-                        @* <div class="card-footer text-center"> *@
-                        @*     @if (User.Identity != null && User.IsInRole("manager")) *@
-                        @*     { *@
-                        @*         <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning btn-sm">Edit</a> *@
-                        @*         <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-primary btn-sm">Details</a> *@
-                        @*         <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger btn-sm">Delete</a> *@
-                        @*     } *@
-                        @*     else if (User.Identity != null) *@
-                        @*     { *@
-                        @*         <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-primary btn-sm">Details</a> *@
-                        @*     } *@
-                        @* </div> *@
+                        <div class="card-footer text-center">
+                            @if (User.Identity != null && User.IsInRole("manager"))
+                            {
+                                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning btn-sm">Edit</a>
+                                <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-primary btn-sm">Details</a>
+                                <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger btn-sm">Delete</a>
+                            }
+                            else if (User.Identity != null)
+                            {
+                                <a asp-action="Details" asp-controller="Products" asp-route-id="@item.Id" class="btn btn-primary btn-sm">Details</a>
+                            }
+                        </div>
                     </div>
                 </div>
             }
@@ -61,11 +62,21 @@
                         <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
                             <a class="page-link"
                                asp-action="ProductsByCategoryChild"
-                            asp-route-page="@i"
-                           asp-route-id="@Model.Products.FirstOrDefault()?.CategoryId">@i</a>
+                               asp-route-page="@i"
+                               asp-route-id="@Model.Products.FirstOrDefault()?.CategoryId">@i</a>
                         </li>
+
                     }
+                   
                 </ul>
+                @if (Model.Products?.FirstOrDefault()?.Category?.ParentCategoryId != null)
+                {
+                    <a class="btn btn-sm btn-info mb-3"
+                       asp-action="ShowCategoryParent"
+                       asp-route-id="@Model.Products.FirstOrDefault()?.Category.ParentCategoryId">
+                        Back to category
+                    </a>
+                }
             </nav>
         </div>
     }

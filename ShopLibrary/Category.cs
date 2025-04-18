@@ -24,5 +24,9 @@ namespace ShopLibrary
 
         public ICollection<Product>? Products { get; set; } = default!;
 
+        //щоб витягти фото в категорію
+        [NotMapped]
+        public byte[]? ImageData { get; set; }
+
     }
 }

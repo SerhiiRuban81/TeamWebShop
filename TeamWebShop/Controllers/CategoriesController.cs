@@ -108,7 +108,46 @@ namespace TeamWebShop.Controllers
             };
             return View(catVM);
         }
+        public async Task<IActionResult> ShowCategoryParent(int? id, int page = 1)
+        {
+            int itemsPerPage = 3;
 
+            var parentCategory = await _context.Categories.FirstOrDefaultAsync(c => c.Id == id);
+
+            var allProducts = await _context.Products
+               .Include(c => c.Category)
+               .Include(b => b.Brand)
+               .Include(i => i.ProductImages)
+               .ToListAsync();
+
+            var categories = await _context.Categories
+                    .Where(c => c.ParentCategoryId == id)
+                    .ToListAsync();
+
+            foreach (var category in categories)
+            {
+                var productWithImage = allProducts
+                    .FirstOrDefault(p => p.CategoryId == category.Id && p.ProductImages.Any());
+
+                category.ImageData = productWithImage?.ProductImages?.FirstOrDefault()?.ImageData;
+            }
+
+
+            int categoryCount = categories.Count();
+            int totalPages = (int)Math.Ceiling((float)categoryCount / itemsPerPage);
+            categories = categories.Skip((page - 1) * itemsPerPage)
+                        .Take(itemsPerPage)
+                        .ToList();
+            ShowCategoryVM catVM = new ShowCategoryVM()
+            {
+                CurrentPage = page,
+                TotalPages = totalPages,
+                Categories = categories,
+                ParentCategory = parentCategory,
+                Products = allProducts
+            };
+            return View(catVM);
+        }
 
         //[Authorize(Roles = "manager")]
         //[Authorize(Policy = "managerPolicy")]
