@@ -1,0 +1,63 @@
+﻿@using ShopLibrary
+@model Cart
+
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+<h1>Cart</h1>
+<div class="row">
+    <div class="col-3">
+        <span>Aside</span>
+    </div>
+    <div class="col">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Product name</th>
+                    <th>Price, USD</th>
+                    <th>Amount</th>
+                    <th>Total price, USD</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (CartItem cartItem in Model.CartItems)
+                {
+                    <tr>
+                        <td>
+                            @if(cartItem.Product.ProductImages != null && cartItem.Product.ProductImages.Count>0)
+                            {
+                                <img src="data:image/*;base64,@Convert.ToBase64String(cartItem.Product.ProductImages!.First().ImageData)" 
+                                alt="@cartItem.Product.ProductName" style="width: 100px" />
+                            }
+                            else
+                            {
+                                <img styl="width: 100px" src="~/images/no-image.webp" alt="@cartItem.Product.ProductName" />
+                            }                            
+                        </td>
+                        <td>@cartItem.Product.Brand.BrandName @cartItem.Product.ProductName</td>
+                        <td>@cartItem.Product.Price USD</td>
+                        <td>@cartItem.Count</td>
+                        <td>@cartItem.TotalPrice USD</td>
+                        <td>
+                            <a asp-action="RemoveFromCart" asp-controller="Cart"
+                               asp-route-id="@cartItem.Product.Id">Delete</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+            <tfoot>
+                <tr>
+                    <th colspan="4" class="text-end">Total:</th>
+                    <th>@Model.GetTotalPrice() USD</th>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+    <div class="col-3">
+        <span>Go to order</span>
+    </div>
+</div>
+
