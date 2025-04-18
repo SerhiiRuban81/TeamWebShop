@@ -18,7 +18,6 @@ builder.Services.AddDbContext<ShopContext>(options =>
 }
 );
 
-
 builder.Services.AddControllersWithViews();
 builder.Services.AddIdentity<ShopUser, IdentityRole>(
     options =>
