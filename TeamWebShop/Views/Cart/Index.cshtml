@@ -1,5 +1,7 @@
 ﻿@using ShopLibrary
-@model Cart
+@* @model Cart *@
+@using TeamWebShop.Models.ViewModels.Cart
+@model CartIndexVM
 
 @*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -7,6 +9,7 @@
 @{
 }
 <h1>Cart</h1>
+<a href="@Model.ReturnUrl">Return</a>
 <div class="row">
     <div class="col-3">
         <span>Aside</span>
@@ -23,7 +26,7 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (CartItem cartItem in Model.CartItems)
+                @foreach (CartItem cartItem in Model.Cart.CartItems)
                 {
                     <tr>
                         <td>
@@ -51,7 +54,7 @@
             <tfoot>
                 <tr>
                     <th colspan="4" class="text-end">Total:</th>
-                    <th>@Model.GetTotalPrice() USD</th>
+                    <th>@Model.Cart.GetTotalPrice() USD</th>
                 </tr>
             </tfoot>
         </table>

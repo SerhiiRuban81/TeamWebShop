@@ -1,9 +1,11 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore;
 using ShopLibrary;
 using TeamWebShop.Data;
 using TeamWebShop.Extensions.MySessionExtensions;
+using TeamWebShop.Models.ViewModels.Cart;
 
 namespace TeamWebShop.Controllers
 {
@@ -16,12 +18,17 @@ namespace TeamWebShop.Controllers
             this.context = context;
         }
 
-        public IActionResult Index(Cart cart)
+        public IActionResult Index(Cart cart, string? returnUrl)
         {
             //Cart cart = GetCart();
-            return View(cart);
+            CartIndexVM vM = new CartIndexVM()
+            {
+                Cart = cart,
+                ReturnUrl = returnUrl
+            };
+            return View(vM);
         }
-        public async Task<IActionResult> AddToCart(int? id, Cart cart)
+        public async Task<IActionResult> AddToCart(int? id, Cart cart, string? returnUrl)
         {
             if (id == null)
                 return NotFound();
@@ -35,7 +42,7 @@ namespace TeamWebShop.Controllers
             //Cart cart = GetCart();
             cart.Add(new CartItem { Product = product, Count = 1 });
             HttpContext.Session.Set(key, cart.CartItems);
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", new {returnUrl});
         }
 
         public IActionResult Show() // For checking only
