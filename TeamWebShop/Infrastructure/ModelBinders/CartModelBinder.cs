@@ -8,6 +8,13 @@ namespace TeamWebShop.Infrastructure.ModelBinders
 {
     public class CartModelBinder : IModelBinder
     {
+        private readonly IHttpContextAccessor httpContextAccessor;
+
+        public CartModelBinder(IHttpContextAccessor httpContextAccessor)
+        {
+            this.httpContextAccessor = httpContextAccessor;
+        }
+
         public Task BindModelAsync(ModelBindingContext bindingContext)
         {
             string key = "cart";
@@ -21,7 +28,7 @@ namespace TeamWebShop.Infrastructure.ModelBinders
                 bindingContext.HttpContext.Session.Set(key, cartItems);
             }
             //Cart cart = new Cart(httpContextAccessor, cartItems);
-            Cart cart = new Cart(cartItems);
+            Cart cart = new Cart(httpContextAccessor, cartItems);
             bindingContext.Result = ModelBindingResult.Success(cart);
             return Task.CompletedTask;
         }

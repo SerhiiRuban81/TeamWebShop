@@ -41,7 +41,7 @@ namespace TeamWebShop.Controllers
                 return NotFound();
             //Cart cart = GetCart();
             cart.Add(new CartItem { Product = product, Count = 1 });
-            HttpContext.Session.Set(key, cart.CartItems);
+            //HttpContext.Session.Set(key, cart.CartItems);
             return RedirectToAction("Index", new {returnUrl});
         }
 
@@ -51,7 +51,7 @@ namespace TeamWebShop.Controllers
             if (id == null)
                 return NotFound();
             cart.Remove(id.Value); // Deleting item from the cart
-            HttpContext.Session.Set(key, cart.CartItems); // Saving data in session to update `Cart` after deleting item
+            //HttpContext.Session.Set(key, cart.CartItems); // Saving data in session to update `Cart` after deleting item
             return RedirectToAction("Index", new { returnUrl });
         }
 
@@ -73,18 +73,18 @@ namespace TeamWebShop.Controllers
             return View();
         }
 
-        public Cart GetCart()
-        {
-            List<CartItem>? cartItems = 
-                HttpContext.Session.Get<List<CartItem>>(key);
+        //public Cart GetCart()
+        //{
+        //    List<CartItem>? cartItems = 
+        //        HttpContext.Session.Get<List<CartItem>>(key);
 
-            if (cartItems == null)
-            {
-                cartItems = new List<CartItem>();
-                HttpContext.Session.Set(key, cartItems);
-            }                
-            Cart cart = new Cart(cartItems);
-            return cart;
-        }
+        //    if (cartItems == null)
+        //    {
+        //        cartItems = new List<CartItem>();
+        //        HttpContext.Session.Set(key, cartItems);
+        //    }                
+        //    Cart cart = new Cart(cartItems);
+        //    return cart;
+        //}
     }
 }

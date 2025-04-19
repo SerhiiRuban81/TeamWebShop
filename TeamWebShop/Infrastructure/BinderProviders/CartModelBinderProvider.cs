@@ -8,8 +8,9 @@ namespace TeamWebShop.Infrastructure.BinderProviders
     {
         public IModelBinder? GetBinder(ModelBinderProviderContext context)
         {
+            IHttpContextAccessor contextAccessor = context.Services.GetRequiredService<IHttpContextAccessor>();
             return context.Metadata.ModelType == typeof(Cart) ?
-                new CartModelBinder() : null;
+                new CartModelBinder(contextAccessor) : null;
         }
     }
 }
