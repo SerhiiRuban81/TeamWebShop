@@ -28,9 +28,17 @@ namespace ShopLibrary
                 cartItem.Count = cartItem.Count + 1;
         }
 
-        public void Remove(CartItem item)
+        public bool Remove(CartItem item)
         {
-            items.Remove(item);
+            return items.Remove(item);
+        }
+
+        public bool Remove(int id)
+        {
+            CartItem? cartItem = items.FirstOrDefault(t => t.Product.Id == id);
+            if(cartItem != null)
+                return items.Remove(cartItem);
+            return false;
         }
 
         public void Clear()

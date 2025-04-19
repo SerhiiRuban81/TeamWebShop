@@ -18,6 +18,7 @@
         <table class="table">
             <thead>
                 <tr>
+                    <th>Image</th>
                     <th>Product name</th>
                     <th>Price, USD</th>
                     <th>Amount</th>
@@ -45,8 +46,11 @@
                         <td>@cartItem.Count</td>
                         <td>@cartItem.TotalPrice USD</td>
                         <td>
-                            <a asp-action="RemoveFromCart" asp-controller="Cart"
-                               asp-route-id="@cartItem.Product.Id">Delete</a>
+                            <form asp-action="RemoveFromCart" method="post">
+                                <input type="hidden" name="id" value="@cartItem.Product.Id"/>
+                                <input type="hidden" name="returnUrl" value="@Model.ReturnUrl" />
+                                <button type="submit" class="btn btn-outline-secondary">Delete</button>
+                            </form>                            
                         </td>
                     </tr>
                 }

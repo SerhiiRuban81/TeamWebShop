@@ -45,6 +45,16 @@ namespace TeamWebShop.Controllers
             return RedirectToAction("Index", new {returnUrl});
         }
 
+        [HttpPost]
+        public IActionResult RemoveFromCart(Cart cart, int? id, string? returnUrl)
+        {
+            if (id == null)
+                return NotFound();
+            cart.Remove(id.Value); // Deleting item from the cart
+            HttpContext.Session.Set(key, cart.CartItems); // Saving data in session to update `Cart` after deleting item
+            return RedirectToAction("Index", new { returnUrl });
+        }
+
         public IActionResult Show() // For checking only
         {
             string? userName = HttpContext.Session.GetString("CurrentUser");
