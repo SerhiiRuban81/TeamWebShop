@@ -18,6 +18,8 @@ namespace ShopLibrary
 
         public List<CartItem> CartItems => items;
 
+        public int ItemsCount => CartItems.Count;
+
         public Cart(IHttpContextAccessor httpContextAccessor, List<CartItem> items)
         {
             this.items = items;

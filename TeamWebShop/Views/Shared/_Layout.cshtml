@@ -44,12 +44,11 @@
                     }
                 
                 
-                </ul>
+                </ul>                
                 <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search">
                     <input type="search" class="form-control form-control-dark text-bg-light" placeholder="Search..." aria-label="Search">
-                </form>
-
-                <div class="text-end">
+                </form>                
+                <div class="text-end me-lg-3">
 					@if (User.Identity != null && User.Identity.IsAuthenticated)
 					{
                         <span class="me-2">Hello, @User.Identity.Name</span>
@@ -59,11 +58,12 @@
 					{
                         <a asp-action="Login" asp-controller="Account" class="btn btn-outline-secondary me-2">Login</a>
                         <a asp-action="Register" asp-controller="Account" class="btn btn-warning">Sign-up</a>
-					}
-                    
-                </div>
+					}                    
+                </div>  
+                @* @await Component.InvokeAsync("CartDetails") *@
+                <vc:cart-details />
             </div>
-        </div>
+        </div>        
     </header>
     <div id="main" class="container">
         @RenderBody()
