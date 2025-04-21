@@ -1,194 +1,134 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ShopLibrary;
 using TeamWebShop.Data;
-using TeamWebShop.Models.DTOs.Products;
-using TeamWebShop.Models.ViewModels.Products;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace TeamWebShop.Controllers
 {
     public class ProductsController : Controller
     {
         private readonly ShopContext _context;
-        private readonly IMapper mapper;
+        private readonly IWebHostEnvironment _hostEnvironment;
 
-        public ProductsController(ShopContext context, IMapper mapper)
+        public ProductsController(ShopContext context, IWebHostEnvironment hostEnvironment)
         {
             _context = context;
-            this.mapper = mapper;
+            _hostEnvironment = hostEnvironment;
         }
 
-        // GET: Products
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string? searchTerm)
         {
-            var shopContext = _context.Products.Include(p => p.Brand).Include(p => p.Category);
-            return View(await shopContext.ToListAsync());
+            var products = _context.Products
+            .Include(p => p.Brand)
+            .Include(p => p.Category)
+            .OrderBy(p => p.ProductName)
+            .AsQueryable();
+
+            if (!string.IsNullOrEmpty(searchTerm))
+            {
+                products = products.Where(p => p.ProductName.Contains(searchTerm) || p.Description.Contains(searchTerm));
+            }
+
+            return View(await products.ToListAsync());
         }
+         
+         public IActionResult Create()
+         {
+             ViewBag.Brands = new SelectList(_context.Brands, "Id", "BrandName");
+             ViewBag.Categories = new SelectList(_context.Categories, "Id", "CategoryName");
+             return View();
+         }
 
-        // GET: Products/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
+         [HttpPost]
+         [ValidateAntiForgeryToken]
+         public async Task<IActionResult> Create([Bind("ProductName,Description,Price,BrandId,CategoryId,Color,ProductModel")] Product product, List<IFormFile> productImages)
+         {
+             if (product.BrandId > 0)
+                 product.Brand = await _context.Brands.FindAsync(product.BrandId) ?? throw new NullReferenceException();
+    
+             if (product.CategoryId > 0)
+                 product.Category = await _context.Categories.FindAsync(product.CategoryId) ?? throw new NullReferenceException();
+    
+             ModelState.Remove("Brand");
+             ModelState.Remove("Category");
+             ModelState.Remove("ProductImages");
+             
+             foreach (var state in ModelState)
+             {
+                 if (state.Value.Errors.Count > 0)
+                 {
+                     Console.WriteLine($"Поле: {state.Key}, Ошибки: {string.Join(", ", state.Value.Errors.Select(e => e.ErrorMessage))}");
+                 }
+             }
+             
+             if (ModelState.IsValid)
+             {
+                 _context.Add(product);
+                 await _context.SaveChangesAsync();
+                 
+                 if (productImages != null && productImages.Count > 0)
+                 {
+                     foreach (var imageFile in productImages)
+                     {
+                         if (imageFile.Length > 0)
+                         {
+                             using (var memoryStream = new MemoryStream())
+                             {
+                                 await imageFile.CopyToAsync(memoryStream);
+                                 var productImage = new ProductImage
+                                 {
+                                     ProductId = product.Id,
+                                     ImageData = memoryStream.ToArray()
+                                 };
+                                 _context.Images.Add(productImage);
+                             }
+                         }
+                     }
+                     await _context.SaveChangesAsync();
+                 }
+                 return RedirectToAction(nameof(Index));
+             }
 
-            var product = await _context.Products
-                .Include(p => p.Brand)
-                .Include(p => p.Category)
-                .Include(p => p.ProductImages)
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (product == null)
-            {
-                return NotFound();
-            }
+             ViewData["BrandId"] = new SelectList(_context.Brands, "Id", "BrandName", product.BrandId);
+             ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "CategoryName", product.CategoryId);
+             return View(product);
+         }
+         
+         [HttpGet]
+         public IActionResult GetImage(int id)
+         {
+             var image = _context.Images.FirstOrDefault(i => i.ProductId == id); // Используем ProductId
+             if (image == null || image.ImageData == null)
+             {
+                 return NotFound();
+             }
 
-            return View(product);
-        }
+             return File(image.ImageData, "image/jpeg");
+         }
+         
+         [HttpPost]
+         [ValidateAntiForgeryToken]
+         public async Task<IActionResult> Delete(int id)
+         {
+             var product = await _context.Products
+             .Include(p => p.ProductImages)
+             .FirstOrDefaultAsync(p => p.Id == id);
 
-        // GET: Products/Create
-        public IActionResult Create()
-        {
-            CreateProductVM viewModel = new CreateProductVM
-            {
-                Categories = new SelectList(_context.Categories, "Id", "CategoryName"),
-                Brands = new SelectList(_context.Brands, "Id", "BrandName"),
-            };
+             if (product == null)
+             {
+                 return NotFound();
+             }
 
-            return View(viewModel);
-        }
+             if (product.ProductImages != null && product.ProductImages.Any())
+             {
+                 _context.Images.RemoveRange(product.ProductImages);
+             }
 
-        // POST: Products/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(CreateProductVM viewModel)
-        {
-            if (ModelState.IsValid)
-            {
-                Product product = mapper.Map<Product>(viewModel.ProductDTO);
-                _context.Add(product);
+             _context.Products.Remove(product);
+             await _context.SaveChangesAsync();
 
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-
-            viewModel.Brands = new SelectList(_context.Brands, "Id", "BrandName");
-            viewModel.Categories = new SelectList(_context.Categories, "Id", "CategoryName");
-
-            return View(viewModel);
-        }
-
-        // GET: Products/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var product = await _context.Products.FindAsync(id);
-            if (product == null)
-            {
-                return NotFound();
-            }
-
-            CreateProductVM viewModel = new CreateProductVM
-            {
-                ProductDTO = mapper.Map<ProductDTO>(product),
-                Brands = new SelectList(_context.Brands, "Id", "BrandName", product.BrandId),
-                Categories = new SelectList(_context.Categories, "Id", "CategoryName", product.CategoryId)
-            };
-
-            return View(viewModel);
-        }
-
-        // POST: Products/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, CreateProductVM viewModel)
-        {
-            if (id != viewModel.ProductDTO.Id)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    Product product = mapper.Map<Product>(viewModel.ProductDTO);
-                    _context.Update(product);
-
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!ProductExists(viewModel.ProductDTO.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-
-            viewModel.Brands = new SelectList(_context.Brands, "Id", "BrandName", viewModel.ProductDTO.BrandId);
-            viewModel.Categories = new SelectList(_context.Categories, "Id", "CategoryName", viewModel.ProductDTO.CategoryId);
-
-            return View(viewModel);
-        }
-
-        // GET: Products/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var product = await _context.Products
-                .Include(p => p.Brand)
-                .Include(p => p.Category)
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (product == null)
-            {
-                return NotFound();
-            }
-
-            return View(product);
-        }
-
-        // POST: Products/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var product = await _context.Products.FindAsync(id);
-            if (product != null)
-            {
-                _context.Products.Remove(product);
-            }
-
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
-
-        private bool ProductExists(int id)
-        {
-            return _context.Products.Any(e => e.Id == id);
-        }
+             return RedirectToAction(nameof(Index));
+         }
     }
 }

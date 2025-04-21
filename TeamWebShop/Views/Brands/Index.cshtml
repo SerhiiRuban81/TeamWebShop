@@ -6,6 +6,7 @@
     ViewData["Title"] = "Index";
     int i = 1;
 }
+
 <div style="margin: 2rem;">
     <h1>Brands</h1>
     <p>
@@ -13,28 +14,29 @@
     </p>
     <table class="table table-striped table-bordered">
         <thead class="table-dark">
-            <tr>
-                <th>#</th>
-                <th scope="col">@Html.DisplayNameFor(model => model.BrandName)</th>
-                <th scope="col">@Html.DisplayNameFor(model => model.Country)</th>
-                <th>Actions</th>
-            </tr>
+        <tr>
+            <th>#</th>
+            <th scope="col">@Html.DisplayNameFor(model => model.BrandName)</th>
+            <th scope="col">@Html.DisplayNameFor(model => model.Country)</th>
+            <th>Actions</th>
+        </tr>
         </thead>
         <tbody>
-            @foreach (var item in Model)
-            {
-                <tr>
-                    <th scope="row">@i</th>
-                    <td>@Html.DisplayFor(modelItem => item.BrandName)</td>
-                    <td>@Html.DisplayFor(modelItem => item.Country)</td>
-                    <td>
-                        <a class="btn btn-sm btn-warning" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
-                        <a class="btn btn-sm btn-info" asp-action="Details" asp-route-id="@item.Id">Details</a>
-                        <a class="btn btn-sm btn-danger" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-                    </td>
-                </tr>
-                i++;
-            }
+        @foreach (var item in Model)
+        {
+            <tr>
+                <th scope="row">@i</th>
+                <td>@Html.DisplayFor(modelItem => item.BrandName)</td>
+                <td>@Html.DisplayFor(modelItem => item.Country)</td>
+                <td>
+                    <a class="btn btn-sm btn-warning" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                    <a class="btn btn-sm btn-info" asp-action="Details" asp-route-id="@item.Id">Details</a>
+                    <a class="btn btn-sm btn-danger" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    <a class="btn btn-sm btn-primary" asp-action="CreateProduct" asp-route-id="@item.Id">Add Product</a>
+                </td>
+            </tr>
+            i++;
+        }
         </tbody>
     </table>
 </div>

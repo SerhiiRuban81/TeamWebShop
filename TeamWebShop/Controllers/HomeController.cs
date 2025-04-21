@@ -19,7 +19,6 @@ namespace TeamWebShop.Controllers
               .Include(b => b.Brand)
               .Include(i=>i.ProductImages)
               .ToListAsync();
-            
             return View(products);
         }
     }
