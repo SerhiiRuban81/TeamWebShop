@@ -1,3 +1,6 @@
+
+﻿@model IEnumerable<ShopLibrary.Product>
+
 @*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
@@ -5,6 +8,76 @@
 @{
     ViewData["Title"] = "Home";
 }
+
+<h3>
+    <span class="brand-span">Rozegro</span>
+    <span>inspiring the life...</span>
+</h3>
+<div id="carouselExampleInterval" 
+    class="carousel slide min-vh-50 " 
+    data-bs-ride="carousel" 
+    data-bs-interval="5000"
+     data-bs-pause="false">
+    <div class="carousel-inner">
+        @{
+            var threeProducts = Model.Select((product, index) => new { product, index })
+            .GroupBy(x => x.index / 3);
+            var isFirst = true;
+        }
+        @foreach (var item in threeProducts)
+        {
+            <div class="carousel-item @(isFirst ? "active" : "")"  >
+                <div class="d-flex justify-content-center">
+                    @foreach (var itemIndex in item)
+                    {
+                        var product = itemIndex.product;
+                        <a style="cursor:pointer; text-decoration:none;" 
+                        asp-action="Details" 
+                        asp-controller="Products" 
+                        asp-route-id="@product.Id">
+                            <div class="card m-2" style="width: 18rem; height: 20rem;">
+
+                                @if (product.ProductImages != null && product.ProductImages.Any())
+                                {
+                                    var firstImage = product.ProductImages.FirstOrDefault();
+                                    if (firstImage != null)
+                                    {
+                                        <img src="data:image/*;base64,@(Convert.ToBase64String(firstImage.ImageData))"
+                                             alt="@product.Category.CategoryName"
+                                             class="card-img-top"
+                                             style="object-fit: contain; height: 120px;" />
+                                    }
+                                }
+                                else
+                                {
+                                    <img style="object-fit: contain; height: 120px;"
+                                         src="~/images/no-image.webp" />
+                                }
+                                <div class="card-body">
+                                    <h5 class="card-title">@product.ProductName</h5>
+                                    <h5 class="card-title">@product.Price UAH</h5>
+                                    <h5 class="card-title">@product.Brand.BrandName</h5>
+                                    <h5 class="card-title">@product.Category.CategoryName</h5>
+                                </div>
+                            </div>
+                        </a>
+                    }
+                </div>
+            </div>
+            isFirst = false;
+        }
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleInterval" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleInterval" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+    </button>
+  
+  
+  <h1>cart</h1>
 
 <h1>Hello, PV312 Team Project</h1>
 <div class="container mt-4">
@@ -17,4 +90,5 @@
             </div>
         }
     </div>
+
 </div>

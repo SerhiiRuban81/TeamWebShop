@@ -7,20 +7,18 @@ namespace TeamWebShop.Controllers
     public class HomeController : Controller
     {
         private readonly ShopContext _context;
-        
+
         public HomeController(ShopContext context)
         {
-            _context = context;
+            this._context = context;
         }
-
         public async Task<IActionResult> Index()
         {
             var products = await _context.Products
-                .Include(p => p.Brand)
-                .Include(p => p.Category)
-                .OrderBy(p => p.ProductName)
-                .ToListAsync();
-            
+              .Include(c => c.Category)
+              .Include(b => b.Brand)
+              .Include(i=>i.ProductImages)
+              .ToListAsync();
             return View(products);
         }
     }
