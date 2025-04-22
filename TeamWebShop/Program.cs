@@ -48,6 +48,8 @@ app.UseDefaultFiles();
 app.UseStaticFiles();
 app.UseAuthentication();
 app.UseAuthorization();
+app.UseSession();
+
 
 app.MapControllerRoute(
     name: "default",
