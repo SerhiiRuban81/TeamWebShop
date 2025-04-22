@@ -33,7 +33,7 @@
                         <div class="card-body">
                             <h5 class="card-title">@item.ProductName</h5>
                             <p class="card-text"><strong>Description:</strong> @item.Description</p>
-                            <h5 class="card-title"><strong>Price:</strong> @item.Price</h5>
+                            <h5 class="card-title"><strong>Price:</strong> @item.Price.ToString("C")</h5>
                             <h5 class="card-title"><strong>Brand Name:</strong> @item.Brand.BrandName</h5>
                             <h5 class="card-title"><strong>Category:</strong> @item.Category.CategoryName</h5>
                         </div>
@@ -47,7 +47,14 @@
                             }
                             else if (User.Identity != null)
                             {
-                                <a asp-action="Details" asp-controller="Products" asp-route-id="@item.Id" class="btn btn-primary btn-sm">Details</a>
+                                <div class="d-flex flex-row justify-content-between gap-2">
+                                    <form asp-controller="Cart" asp-action="AddToCart">
+                                        <input type="hidden" name="id" value="@item.Id" />
+                                        <input type="hidden" name="returnUrl" value="@($"{Context.Request.Path}{Context.Request.QueryString}")" />
+                                        <button style="background-color:#ff5f07;" type="submit" class="btn btn-sm">Buy</button>
+                                    </form>
+                                    <a asp-action="Details" asp-controller="Products" asp-route-id="@item.Id" class="btn btn-primary btn-sm">Details</a>
+                                </div>
                             }
                         </div>
                     </div>
