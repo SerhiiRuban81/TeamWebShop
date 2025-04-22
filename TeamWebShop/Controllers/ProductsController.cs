@@ -57,8 +57,8 @@ namespace TeamWebShop.Controllers
         {
             CreateProductVM viewModel = new CreateProductVM
             {
-                Categories = new SelectList(_context.Categories, "Id", "CategoryName"),
                 Brands = new SelectList(_context.Brands, "Id", "BrandName"),
+                Categories = new SelectList(_context.Categories, "Id", "CategoryName")
             };
 
             return View(viewModel);

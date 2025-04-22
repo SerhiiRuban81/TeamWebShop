@@ -1,25 +1,96 @@
-﻿@using TeamWebShop.Models.ViewModels.Home
-@model HomeIndexVM
+@model IEnumerable<ShopLibrary.Product>
 
 @*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
 @{
+    ViewData["Title"] = "Home";
 }
+
 <h3>
     <span class="brand-span">Rozegro</span>
     <span>inspiring the life...</span>
 </h3>
+<div id="carouselExampleInterval"
+     class="carousel slide min-vh-50 "
+     data-bs-ride="carousel"
+     data-bs-interval="5000"
+     data-bs-pause="false">
+    <div class="carousel-inner">
+        @{
+            var threeProducts = Model.Select((product, index) => new { product, index })
+            .GroupBy(x => x.index / 3);
+            var isFirst = true;
+        }
+        @foreach (var item in threeProducts)
+        {
+            <div class="carousel-item @(isFirst ? "active" : "")">
+                <div class="d-flex justify-content-center">
+                    @foreach (var itemIndex in item)
+                    {
+                        var product = itemIndex.product;
+                        <a style="cursor:pointer; text-decoration:none;"
+                           asp-action="Details"
+                           asp-controller="Products"
+                           asp-route-id="@product.Id">
+                            <div class="card m-4" style="width: 20rem; height: 24rem; box-sizing:border-box;">
 
-<h1>Products Catalogue</h1>
-
-@* @if (Model.Products!.Any()) *@
-@* { *@
-@*     <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3"> *@
-@*         <div class="col"> *@
-
-@*         </div> *@
-@*     </div> *@
-@* } *@
-
-@* @2.4043  *@
+                                @if (product.ProductImages != null && product.ProductImages.Any())
+                                {
+                                    var firstImage = product.ProductImages.FirstOrDefault();
+                                    if (firstImage != null)
+                                    {
+                                        <img class="card-img-top position-relative align-self-center m-3"
+                                             src="data:image/*;base64,@(Convert.ToBase64String(firstImage.ImageData))"
+                                             alt="@product.Category.CategoryName"
+                                             style="object-fit: contain; height: 120px; width: 120px;" />
+                                    }
+                                }
+                                else
+                                {
+                                    <img class="card-img-top position-relative align-self-center m-3"
+                                         style="object-fit: contain; height: 120px; width: 120px;"
+                                         src="~/images/no-image.webp" />
+                                }
+                                <div style="box-sizing:border-box;" class="card-body">
+                                    <h5 style="overflow-y: hidden;" class="card-title">@product.ProductName</h5>
+                                    <h5 class="card-title">@product.Brand.BrandName</h5>
+                                    <h5 class="card-title">@product.Category.CategoryName</h5>
+                                    <p class="h4 text-primary mb-3">@product.Price.ToString("C")</p>
+                                    <div>
+                                        <form asp-controller="Cart" asp-action="AddToCart">
+                                            <input type="hidden" name="id" value="@product.Id" />
+                                            <input type="hidden" name="returnUrl" value="@($"{Context.Request.Path}{Context.Request.QueryString}")" />
+                                            <button style="background-color:#ff5f07;" type="submit" class="btn btn-sm">Buy</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    }
+                </div>
+            </div>
+            isFirst = false;
+        }
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleInterval" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleInterval" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+    </button>
+</div>
+<h1>Hello, PV312 Team Project</h1>
+<div class="container mt-4">
+    <h1 class="mb-4">Products</h1>
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+        @foreach (var product in Model)
+        {
+            <div class="col">
+                @Html.Partial("_ProductCard", product)
+            </div>
+        }
+    </div>
+</div>
