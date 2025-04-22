@@ -46,6 +46,21 @@
                         <td>@cartItem.Count</td>
                         <td>@cartItem.TotalPrice USD</td>
                         <td>
+                          @* add *@
+                            <div style="display:flex; flex-direction: row; gap:5px;">
+                                <form asp-action="AddToCart" method="post">
+                                    <input type="hidden" name="id" value="@cartItem.Product.Id" />
+                                    <input type="hidden" name="returnUrl" value="@Model.ReturnUrl" />
+                                    <button type="submit" class="btn btn-outline-secondary btn-sm">+</button>
+                                </form>
+                                <p><strong>@cartItem.Count</strong></p>
+                                <form asp-action="RemoveOneCart" method="post">
+                                    <input type="hidden" name="id" value="@cartItem.Product.Id" />
+                                    <input type="hidden" name="returnUrl" value="@Model.ReturnUrl" />
+                                    <button type="submit" class="btn btn-outline-secondary btn-sm">-</button>
+                                </form>
+                            </div>
+                            @* add *@
                             <form asp-action="RemoveFromCart" method="post">
                                 <input type="hidden" name="id" value="@cartItem.Product.Id"/>
                                 <input type="hidden" name="returnUrl" value="@Model.ReturnUrl" />

@@ -73,5 +73,24 @@ namespace ShopLibrary
         {
             return items.Sum(t => t.TotalPrice);
         }
+
+
+        ///add 
+        public void DecreaseOne(CartItem item)
+        {
+            CartItem? cartItem = items.FirstOrDefault(c => c.Product.Id == item.Product.Id);
+            if (cartItem != null)
+            {
+                cartItem.Count = cartItem.Count - 1;
+            }
+            if (item.Count <= 0)
+            {
+                CartItems.Remove(item);
+            }
+            if (httpContextAccessor.HttpContext is not null)
+                httpContextAccessor.HttpContext.Session.Set(key, CartItems);
+        }
+
+        ////
     }
 }

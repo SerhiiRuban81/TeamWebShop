@@ -86,5 +86,26 @@ namespace TeamWebShop.Controllers
         //    Cart cart = new Cart(cartItems);
         //    return cart;
         //}
+
+
+        /////add
+        public async Task<IActionResult> RemoveOneCart(int? id, Cart cart, string? returnUrl)
+        {
+            if (id == null)
+                return NotFound();
+            Product? product = await context.Products
+                .Include(b => b.Brand)
+                .Include(p => p.ProductImages)
+                .FirstOrDefaultAsync(i => i.Id == id);
+            if (product == null)
+                return NotFound();
+            cart.DecreaseOne(new CartItem { Product = product, Count = 1 });
+            return RedirectToAction("Index", new { returnUrl });
+        }
+
+
+
+        ///
+
     }
 }
