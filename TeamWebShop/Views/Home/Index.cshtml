@@ -1,10 +1,8 @@
-
-﻿@model IEnumerable<ShopLibrary.Product>
+@model IEnumerable<ShopLibrary.Product>
 
 @*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
-@model IEnumerable<ShopLibrary.Product>
 @{
     ViewData["Title"] = "Home";
 }
@@ -13,10 +11,10 @@
     <span class="brand-span">Rozegro</span>
     <span>inspiring the life...</span>
 </h3>
-<div id="carouselExampleInterval" 
-    class="carousel slide min-vh-50 " 
-    data-bs-ride="carousel" 
-    data-bs-interval="5000"
+<div id="carouselExampleInterval"
+     class="carousel slide min-vh-50 "
+     data-bs-ride="carousel"
+     data-bs-interval="5000"
      data-bs-pause="false">
     <div class="carousel-inner">
         @{
@@ -26,38 +24,46 @@
         }
         @foreach (var item in threeProducts)
         {
-            <div class="carousel-item @(isFirst ? "active" : "")"  >
+            <div class="carousel-item @(isFirst ? "active" : "")">
                 <div class="d-flex justify-content-center">
                     @foreach (var itemIndex in item)
                     {
                         var product = itemIndex.product;
-                        <a style="cursor:pointer; text-decoration:none;" 
-                        asp-action="Details" 
-                        asp-controller="Products" 
-                        asp-route-id="@product.Id">
-                            <div class="card m-2" style="width: 18rem; height: 20rem;">
+                        <a style="cursor:pointer; text-decoration:none;"
+                           asp-action="Details"
+                           asp-controller="Products"
+                           asp-route-id="@product.Id">
+                            <div class="card m-4" style="width: 20rem; height: 24rem; box-sizing:border-box;">
 
                                 @if (product.ProductImages != null && product.ProductImages.Any())
                                 {
                                     var firstImage = product.ProductImages.FirstOrDefault();
                                     if (firstImage != null)
                                     {
-                                        <img src="data:image/*;base64,@(Convert.ToBase64String(firstImage.ImageData))"
+                                        <img class="card-img-top position-relative align-self-center m-3"
+                                             src="data:image/*;base64,@(Convert.ToBase64String(firstImage.ImageData))"
                                              alt="@product.Category.CategoryName"
-                                             class="card-img-top"
-                                             style="object-fit: contain; height: 120px;" />
+                                             style="object-fit: contain; height: 120px; width: 120px;" />
                                     }
                                 }
                                 else
                                 {
-                                    <img style="object-fit: contain; height: 120px;"
+                                    <img class="card-img-top position-relative align-self-center m-3"
+                                         style="object-fit: contain; height: 120px; width: 120px;"
                                          src="~/images/no-image.webp" />
                                 }
-                                <div class="card-body">
-                                    <h5 class="card-title">@product.ProductName</h5>
-                                    <h5 class="card-title">@product.Price UAH</h5>
+                                <div style="box-sizing:border-box;" class="card-body">
+                                    <h5 style="overflow-y: hidden;" class="card-title">@product.ProductName</h5>
                                     <h5 class="card-title">@product.Brand.BrandName</h5>
                                     <h5 class="card-title">@product.Category.CategoryName</h5>
+                                    <p class="h4 text-primary mb-3">@product.Price.ToString("C")</p>
+                                    <div>
+                                        <form asp-controller="Cart" asp-action="AddToCart">
+                                            <input type="hidden" name="id" value="@product.Id" />
+                                            <input type="hidden" name="returnUrl" value="@($"{Context.Request.Path}{Context.Request.QueryString}")" />
+                                            <button style="background-color:#ff5f07;" type="submit" class="btn btn-sm">Buy</button>
+                                        </form>
+                                    </div>
                                 </div>
                             </div>
                         </a>
@@ -75,10 +81,7 @@
         <span class="carousel-control-next-icon" aria-hidden="true"></span>
         <span class="visually-hidden">Next</span>
     </button>
-  
-  
-  <h1>cart</h1>
-
+</div>
 <h1>Hello, PV312 Team Project</h1>
 <div class="container mt-4">
     <h1 class="mb-4">Products</h1>
@@ -90,5 +93,4 @@
             </div>
         }
     </div>
-
 </div>
