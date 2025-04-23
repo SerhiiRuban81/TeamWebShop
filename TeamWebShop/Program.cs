@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using TeamWebShop.Data;
+using TeamWebShop.Infrastructure.BinderProviders;
 using TeamWebShop.Profiles;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -18,8 +19,10 @@ builder.Services.AddDbContext<ShopContext>(options =>
 }
 );
 
-
-builder.Services.AddControllersWithViews();
+builder.Services.AddControllersWithViews(options =>
+{
+    options.ModelBinderProviders.Insert(0, new CartModelBinderProvider());
+});
 builder.Services.AddIdentity<ShopUser, IdentityRole>(
     options =>
     {
@@ -45,6 +48,8 @@ app.UseDefaultFiles();
 app.UseStaticFiles();
 app.UseAuthentication();
 app.UseAuthorization();
+app.UseSession();
+
 
 app.MapControllerRoute(
     name: "default",

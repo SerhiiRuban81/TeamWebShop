@@ -1,0 +1,85 @@
+﻿@using ShopLibrary
+@* @model Cart *@
+@using TeamWebShop.Models.ViewModels.Cart
+@model CartIndexVM
+
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+<h1>Cart</h1>
+<a href="@Model.ReturnUrl">Return</a>
+<div class="row">
+    <div class="col-3">
+        <span>Aside</span>
+    </div>
+    <div class="col">
+        <table class="table  me-lg-3">
+            <thead>
+                <tr>
+                    <th>Image</th>
+                    <th>Product name</th>
+                    <th>Price, USD</th>
+                    <th>Amount</th>
+                    <th>Total price, USD</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (CartItem cartItem in Model.Cart.CartItems)
+                {
+                    <tr>
+                        <td>
+                            @if(cartItem.Product.ProductImages != null && cartItem.Product.ProductImages.Count>0)
+                            {
+                                <img src="data:image/*;base64,@Convert.ToBase64String(cartItem.Product.ProductImages!.First().ImageData)" 
+                                alt="@cartItem.Product.ProductName" style="width: 100px" />
+                            }
+                            else
+                            {
+                                <img style="width: 100px" src="~/images/no-image.webp" alt="@cartItem.Product.ProductName" />
+                            }                            
+                        </td>
+                        <td>@cartItem.Product.Brand.BrandName @cartItem.Product.ProductName</td>
+                        <td>@cartItem.Product.Price USD</td>
+                        <td>@cartItem.Count</td>
+                        <td>@cartItem.TotalPrice USD</td>
+                        <td>
+                          @* add *@
+                            <div style="display:flex; flex-direction: row; gap:5px;">
+                                <form asp-action="AddToCart" method="post">
+                                    <input type="hidden" name="id" value="@cartItem.Product.Id" />
+                                    <input type="hidden" name="returnUrl" value="@Model.ReturnUrl" />
+                                    <button type="submit" class="btn btn-outline-secondary btn-sm">+</button>
+                                </form>
+                                <p><strong>@cartItem.Count</strong></p>
+                                <form asp-action="RemoveOneCart" method="post">
+                                    <input type="hidden" name="id" value="@cartItem.Product.Id" />
+                                    <input type="hidden" name="returnUrl" value="@Model.ReturnUrl" />
+                                    <button type="submit" class="btn btn-outline-secondary btn-sm">-</button>
+                                </form>
+                            </div>
+                            @* add *@
+                            <form asp-action="RemoveFromCart" method="post">
+                                <input type="hidden" name="id" value="@cartItem.Product.Id"/>
+                                <input type="hidden" name="returnUrl" value="@Model.ReturnUrl" />
+                                <button type="submit" class="btn btn-outline-secondary">Delete</button>
+                            </form>                            
+                        </td>
+                    </tr>
+                }
+            </tbody>
+            <tfoot>
+                <tr>
+                    <th colspan="4" class="text-end">Total:</th>
+                    <th>@Model.Cart.GetTotalPrice() USD</th>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+    <div class="col-3">
+        <span>Go to order</span>
+    </div>
+</div>
+
