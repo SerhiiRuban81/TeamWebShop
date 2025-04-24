@@ -20,9 +20,9 @@
                 <tr>
                     <th>Image</th>
                     <th>Product name</th>
-                    <th>Price, USD</th>
+                    <th>Price</th>
                     <th>Amount</th>
-                    <th>Total price, USD</th>
+                    <th>Total price</th>
                     <th></th>
                 </tr>
             </thead>
@@ -42,9 +42,9 @@
                             }                            
                         </td>
                         <td>@cartItem.Product.Brand.BrandName @cartItem.Product.ProductName</td>
-                        <td>@cartItem.Product.Price USD</td>
+                        <td>@cartItem.Product.Price.ToString("C")</td>
                         <td>@cartItem.Count</td>
-                        <td>@cartItem.TotalPrice USD</td>
+                        <td>@cartItem.TotalPrice.ToString("C")</td>
                         <td>
                           @* add *@
                             <div style="display:flex; flex-direction: row; gap:5px;">
@@ -73,7 +73,7 @@
             <tfoot>
                 <tr>
                     <th colspan="4" class="text-end">Total:</th>
-                    <th>@Model.Cart.GetTotalPrice() USD</th>
+                    <th>@Model.Cart.GetTotalPrice().ToString("C")</th>
                 </tr>
             </tfoot>
         </table>
