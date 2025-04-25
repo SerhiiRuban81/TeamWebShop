@@ -1,5 +1,5 @@
 ﻿namespace TeamWebShop.Models.ViewModels.Cart
-    
+
 {
     public class CartIndexVM
     {

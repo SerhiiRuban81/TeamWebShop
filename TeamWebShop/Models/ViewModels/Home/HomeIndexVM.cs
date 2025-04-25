@@ -1,5 +1,4 @@
 ﻿using ShopLibrary;
-using System.Runtime.InteropServices;
 
 namespace TeamWebShop.Models.ViewModels.Home
 {

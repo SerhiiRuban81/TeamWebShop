@@ -7,7 +7,7 @@
 <h1>Create new role</h1>
 <br />
 <br />
-<form asp-action="CreateRole" method="post" class="link-warning">
+<form asp-action="CreateRole" method="post" >
     <div class="mb-3">
         <label for="roleName">Role name</label>
         <input type="text" name="roleName" id="roleName" required/>
@@ -22,15 +22,5 @@
 	@{
 		await Html.RenderPartialAsync("_ValidationScriptsPartial");
 	}
-	@* <script> *@
-	@* 	$(document).ready(function () { *@
-	@* 		$('#roleName').on('input', function () { *@
-	@* 			var input = $(this).val(); *@
-	@* 			var isValid = /^[a-zA-Z_]+$/.test(input); *@
-	@* 			if (!isValid) { *@
-	@* 				alert('Role name can only contain letters and underscores.'); *@
-	@* 			} *@
-	@* 		}); *@
-	@* 	}); *@
-	@* </script> *@
+
 }
