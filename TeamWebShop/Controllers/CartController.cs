@@ -1,10 +1,7 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ShopLibrary;
 using TeamWebShop.Data;
-using TeamWebShop.Extensions.MySessionExtensions;
 using TeamWebShop.Models.ViewModels.Cart;
 
 namespace TeamWebShop.Controllers
@@ -42,7 +39,7 @@ namespace TeamWebShop.Controllers
             //Cart cart = GetCart();
             cart.Add(new CartItem { Product = product, Count = 1 });
             //HttpContext.Session.Set(key, cart.CartItems);
-            return RedirectToAction("Index", new {returnUrl});
+            return RedirectToAction("Index", new { returnUrl });
         }
 
         [HttpPost]

@@ -4,7 +4,7 @@ using TeamWebShop.Models.DTOs.Roles;
 
 namespace TeamWebShop.Profiles
 {
-    public class RoleProfile : Profile 
+    public class RoleProfile : Profile
     {
         public RoleProfile()
         {

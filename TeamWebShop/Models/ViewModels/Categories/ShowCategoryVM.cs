@@ -1,5 +1,4 @@
 ﻿using ShopLibrary;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace TeamWebShop.Models.ViewModels.Categories
 {
@@ -12,6 +11,6 @@ namespace TeamWebShop.Models.ViewModels.Categories
 
         public Category? ParentCategory { get; set; }
         public IEnumerable<Product>? Products { get; set; }
-       
+
     }
 }

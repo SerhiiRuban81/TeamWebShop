@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -24,7 +23,7 @@ namespace TeamWebShop.Controllers
         {
             var category = await _context.Categories
                 .Include(c => c.ParentCategory)
-                .Include(c=>c.ChildCategories)
+                .Include(c => c.ChildCategories)
                 .ToListAsync();
 
             return View(category);
@@ -46,7 +45,7 @@ namespace TeamWebShop.Controllers
 
         // POST: Categories/Create
 
-       // [Authorize(Policy = "managerPolicy")]
+        // [Authorize(Policy = "managerPolicy")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(CreateCategoryVM vM, IList<int?> parentCategoryId)
@@ -70,7 +69,7 @@ namespace TeamWebShop.Controllers
         // GET: Categories/Details/5
 
 
-       // [Authorize(Policy = "managerPolicy")]
+        // [Authorize(Policy = "managerPolicy")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -80,7 +79,7 @@ namespace TeamWebShop.Controllers
 
             var category = await _context.Categories
                 .Include(c => c.ParentCategory)
-                .Include(c=>c.ChildCategories)
+                .Include(c => c.ChildCategories)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (category == null)
             {
@@ -92,7 +91,7 @@ namespace TeamWebShop.Controllers
         {
             int itemsPerPage = 3;
             IQueryable<Product> products = _context.Products
-                .Include(c=>c.Category)
+                .Include(c => c.Category)
                 .Where(p => p.CategoryId == id)
                 .Include(b => b.Brand)
                 .Include(i => i.ProductImages);

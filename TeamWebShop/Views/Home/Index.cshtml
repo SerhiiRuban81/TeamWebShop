@@ -61,7 +61,7 @@
                                         <form asp-controller="Cart" asp-action="AddToCart">
                                             <input type="hidden" name="id" value="@product.Id" />
                                             <input type="hidden" name="returnUrl" value="@($"{Context.Request.Path}{Context.Request.QueryString}")" />
-                                            <button style="background-color:#ff5f07;" type="submit" class="btn btn-sm">Buy</button>
+                                            <button style="background-color:#ff5f07" type="submit" class="btn btn-sm">Buy</button>
                                         </form>
                                     </div>
                                 </div>

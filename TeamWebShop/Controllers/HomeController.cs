@@ -17,7 +17,7 @@ namespace TeamWebShop.Controllers
             var products = await _context.Products
               .Include(c => c.Category)
               .Include(b => b.Brand)
-              .Include(i=>i.ProductImages)
+              .Include(i => i.ProductImages)
               .ToListAsync();
             return View(products);
         }

@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
 using TeamWebShop.Data;
 using TeamWebShop.Infrastructure.BinderProviders;
 using TeamWebShop.Profiles;
@@ -34,7 +33,16 @@ builder.Services.AddIdentity<ShopUser, IdentityRole>(
     })
     .AddEntityFrameworkStores<ShopContext>();
 
-
+builder.Services.AddAuthentication().AddGoogle(options =>
+{
+    IConfigurationSection googleAuthNSection = builder.Configuration.GetSection("Authentication:Google");
+    string clientId = googleAuthNSection.GetValue<string>("ClientId") ??
+    throw new InvalidOperationException("Please provide ClientId!");
+    string clientSecret = googleAuthNSection.GetValue<string>("ClientSecret") ??
+    throw new InvalidOperationException("Please provide Client Secret!");
+    options.ClientId = clientId;
+    options.ClientSecret = clientSecret;
+});
 
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddSession();

@@ -4,7 +4,7 @@ using TeamWebShop.Models.DTOs.Categories;
 
 namespace TeamWebShop.Profiles
 {
-    public class CategoryProfile:Profile
+    public class CategoryProfile : Profile
     {
         public CategoryProfile()
         {

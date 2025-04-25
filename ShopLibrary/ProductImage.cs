@@ -10,7 +10,7 @@ namespace ShopLibrary
 
         [ForeignKey(nameof(Product))]
         public int ProductId { get; set; }
-        
+
         public Product? Product { get; set; }
     }
 }

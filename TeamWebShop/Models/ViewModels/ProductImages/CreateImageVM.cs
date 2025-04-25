@@ -1,13 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
 using System.ComponentModel.DataAnnotations;
-using TeamWebShop.Models.DTOs.ProductImages;
 
 namespace TeamWebShop.Models.ViewModels.ProductImages
 {
     public class CreateImageVM
     {
         [Display(Name = "Brands")]
-        public SelectList? Brands  { get; set; }
+        public SelectList? Brands { get; set; }
 
         [Display(Name = "Please choose brand")]
         public int? SelectedBrandId { get; set; } = default!;
