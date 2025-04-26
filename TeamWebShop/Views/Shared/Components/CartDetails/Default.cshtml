@@ -13,7 +13,7 @@
     </svg>
     @if (Model.ItemsCount > 0)
     {
-        <text> @Model.GetTotalPrice() USD.</text>
+        <text> @Model.GetTotalPrice().ToString("C").</text>
 
     }
     else
