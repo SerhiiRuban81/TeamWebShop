@@ -39,6 +39,6 @@ namespace TeamWebShop.Models.DTOs.Admin
         [Display(Name = "Remain in system")]
         public bool IsPersistent { get; set; } = false;
 
-        
+
     }
 }

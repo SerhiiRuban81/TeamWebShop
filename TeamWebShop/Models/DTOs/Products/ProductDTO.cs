@@ -1,6 +1,5 @@
 ﻿using ShopLibrary;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using TeamWebShop.Models.DTOs.Brands;
 using TeamWebShop.Models.DTOs.Categories;
 

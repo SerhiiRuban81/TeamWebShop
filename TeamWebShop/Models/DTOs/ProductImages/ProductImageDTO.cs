@@ -1,6 +1,4 @@
-﻿using ShopLibrary;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations;
 using TeamWebShop.Models.DTOs.Products;
 
 namespace TeamWebShop.Models.DTOs.ProductImages

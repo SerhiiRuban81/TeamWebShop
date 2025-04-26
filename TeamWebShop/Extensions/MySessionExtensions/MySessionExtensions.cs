@@ -27,9 +27,9 @@ namespace TeamWebShop.Extensions.MySessionExtensions
             };
             T? item = default;
             string? str = session.GetString(key);
-            if(str!=null)
+            if (str != null)
                 item = JsonSerializer.Deserialize<T>(str, options);
-            return item;          
+            return item;
         }
     }
 }

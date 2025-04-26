@@ -1,7 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
 using ShopLibrary;
-using System.Diagnostics;
 using TeamWebShop.Extensions.MySessionExtensions;
 
 namespace TeamWebShop.Infrastructure.ModelBinders

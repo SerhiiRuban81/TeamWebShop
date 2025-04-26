@@ -12,6 +12,7 @@
             <th>@Html.DisplayNameFor(modelItem => modelItem.Id)</th>
             <th>@Html.DisplayNameFor(modelItem => modelItem.Email)</th>
             <th>@Html.DisplayNameFor(modelItem => modelItem.IsPrivatePerson)</th>
+			<th>@Html.DisplayNameFor(modelItem => modelItem.PhoneNumber)</th>
             <th></th>
         </tr>
 
@@ -25,7 +26,7 @@
                 <td>@shopUser.IsPrivatePerson</td>
                 <td>@shopUser.PhoneNumber</td>
                 <td>
-                    <a asp-action="ChangeRole" asp-route-id="@shopUser.Id" class="link-warning">Change roles </a>
+                    <a asp-action="ChangeRole" asp-route-id="@shopUser.Id">Change roles </a>
                 </td>
             </tr>
         }

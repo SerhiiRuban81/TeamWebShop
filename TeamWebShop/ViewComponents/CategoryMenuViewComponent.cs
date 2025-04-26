@@ -1,12 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using TeamWebShop.Data;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Http.HttpResults;
+using TeamWebShop.Data;
 
 
 namespace TeamWebShop.ViewComponents
 {
-    public class CategoryMenuViewComponent: ViewComponent
+    public class CategoryMenuViewComponent : ViewComponent
     {
         private readonly ShopContext _context;
 
@@ -23,6 +22,6 @@ namespace TeamWebShop.ViewComponents
                .Include(c => c.ChildCategories).ToListAsync();
             return View(categories);
         }
-       
+
     }
 }

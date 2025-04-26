@@ -33,7 +33,7 @@
                     </li>                    
                     <li><a asp-action="Index" asp-controller="ProductImages" class="nav-link px-2 text-dark">Images</a></li>
                     
-                    @if (User.Identity != null && User.IsInRole("admin"))
+                    @if (User.Identity != null && User.IsInRole("Admin"))
                     {
                         <li>
                             <a asp-action="Index" asp-controller="Users"

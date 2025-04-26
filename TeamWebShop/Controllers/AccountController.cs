@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 using TeamWebShop.Data;
 using TeamWebShop.Models.DTOs.Admin;
 
@@ -78,6 +80,48 @@ namespace TeamWebShop.Controllers
         public async Task<IActionResult> Logout()
         {
             await signInManager.SignOutAsync();
+            return RedirectToAction("Index", "Home");
+        }
+        public IActionResult AccessDenied()
+        {
+            return View();
+        }
+
+        [AllowAnonymous]
+        public IActionResult GoogleLogin()
+        {
+            string? returnUrl = Url.Action("GoogleResponse", "Account");
+            var properties = signInManager.ConfigureExternalAuthenticationProperties("Google", returnUrl);
+            return Challenge(properties, "Google");
+        }
+
+        [AllowAnonymous]
+        public async Task<IActionResult> GoogleResponse()
+        {
+            ExternalLoginInfo? loginInfo = await signInManager.GetExternalLoginInfoAsync();
+            if (loginInfo == null)
+                return RedirectToAction("Login");
+            var signInResult = await signInManager.ExternalLoginSignInAsync(loginInfo.LoginProvider,
+                loginInfo.ProviderKey, isPersistent: false);
+            if (!signInResult.Succeeded)
+            {
+                string[] userInfo =
+                {
+                loginInfo.Principal.FindFirst(ClaimTypes.Email)!.Value!
+                };
+                ShopUser? shopUser = await userManager.FindByEmailAsync(userInfo[1]);
+                if (shopUser == null)
+                {
+                    shopUser = new ShopUser
+                    {
+                        Email = userInfo[1],
+                        
+                    };
+                    var createResult = await userManager.CreateAsync(shopUser);
+                }
+                var result = await userManager.AddLoginAsync(shopUser, loginInfo);
+                await signInManager.SignInAsync(shopUser, isPersistent: false);
+            }
             return RedirectToAction("Index", "Home");
         }
     }

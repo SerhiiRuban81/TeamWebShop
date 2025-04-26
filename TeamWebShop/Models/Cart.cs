@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TeamWebShop.Extensions.MySessionExtensions;
+﻿using TeamWebShop.Extensions.MySessionExtensions;
 
 
 namespace ShopLibrary
@@ -41,11 +36,11 @@ namespace ShopLibrary
             CartItem? cartItem = items.FirstOrDefault(t => t.Product.Id == item.Product.Id);
             if (cartItem == null)
             {
-                items.Add(item);                
-            }                
+                items.Add(item);
+            }
             else
                 cartItem.Count = cartItem.Count + 1;
-            if(httpContextAccessor.HttpContext is not null)
+            if (httpContextAccessor.HttpContext is not null)
                 httpContextAccessor.HttpContext!.Session.Set(key, CartItems);
         }
 

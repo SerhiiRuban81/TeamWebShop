@@ -4,7 +4,7 @@ using TeamWebShop.Models.DTOs.Brands;
 
 namespace TeamWebShop.Profiles
 {
-    public class BrandProfile: Profile
+    public class BrandProfile : Profile
     {
         public BrandProfile()
         {
