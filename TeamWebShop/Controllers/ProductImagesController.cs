@@ -49,7 +49,7 @@ namespace TeamWebShop.Controllers
         // GET: ProductImages/Create
         public async Task<IActionResult> Create(int? selectedCategoryId, int? selectedBrandId)
         {
-            IQueryable<Product> products = _context.Products;
+            IQueryable<Product> products = _context.Product;
             if (selectedCategoryId != null)
                 products = products.Where(p => p.CategoryId == selectedCategoryId);
             if (selectedBrandId != null)
@@ -93,7 +93,7 @@ namespace TeamWebShop.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            IQueryable<Product> products = _context.Products;
+            IQueryable<Product> products = _context.Product;
             if (vM.SelectedCategoryId != null)
                 products = products.Where(p => p.CategoryId == vM.SelectedCategoryId);
             if (vM.SelectedBrandId != null)
@@ -124,7 +124,7 @@ namespace TeamWebShop.Controllers
                 return NotFound("Image not found!");
             }
 
-            var products = await _context.Products.ToListAsync();
+            var products = await _context.Product.ToListAsync();
             var imageDTO = mapper.Map<ProductImageDTO>(productImage);
             return View(imageDTO);
 
@@ -276,7 +276,7 @@ namespace TeamWebShop.Controllers
         {
             IEnumerable<Brand> brands = await _context.Brands.ToListAsync();
             IEnumerable<Category> categories = await _context.Categories.ToListAsync();
-            IQueryable<Product> products = _context.Products;
+            IQueryable<Product> products = _context.Product;
             if (categoryId != null)
                 products = products.Where(p => p.CategoryId == categoryId);
             if (brandId != null)

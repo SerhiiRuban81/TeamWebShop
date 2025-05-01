@@ -29,7 +29,7 @@ namespace TeamWebShop.Controllers
         {
             if (id == null)
                 return NotFound();
-            Product? product = await context.Products
+            Product? product = await context.Product
                 .Include(t => t.Brand)
                 .Include(t => t.ProductImages)
                 .FirstOrDefaultAsync(t => t.Id == id);
@@ -90,7 +90,7 @@ namespace TeamWebShop.Controllers
         {
             if (id == null)
                 return NotFound();
-            Product? product = await context.Products
+            Product? product = await context.Product
                 .Include(b => b.Brand)
                 .Include(p => p.ProductImages)
                 .FirstOrDefaultAsync(i => i.Id == id);

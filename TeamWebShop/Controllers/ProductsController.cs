@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+﻿ using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -23,7 +23,7 @@ namespace TeamWebShop.Controllers
         // GET: Products
         public async Task<IActionResult> Index()
         {
-            var shopContext = _context.Products.Include(p => p.Brand).Include(p => p.Category);
+            var shopContext = _context.Product.Include(p => p.Brand).Include(p => p.Category);
             return View(await shopContext.ToListAsync());
         }
 
@@ -35,7 +35,7 @@ namespace TeamWebShop.Controllers
                 return NotFound();
             }
 
-            var product = await _context.Products
+            var product = await _context.Product
                 .Include(p => p.Brand)
                 .Include(p => p.Category)
                 .Include(p => p.ProductImages)
@@ -90,7 +90,7 @@ namespace TeamWebShop.Controllers
                 return NotFound();
             }
 
-            var product = await _context.Products.FindAsync(id);
+            var product = await _context.Product.FindAsync(id);
             if (product == null)
             {
                 return NotFound();
@@ -155,7 +155,7 @@ namespace TeamWebShop.Controllers
                 return NotFound();
             }
 
-            var product = await _context.Products
+            var product = await _context.Product
                 .Include(p => p.Brand)
                 .Include(p => p.Category)
                 .FirstOrDefaultAsync(m => m.Id == id);
@@ -172,10 +172,10 @@ namespace TeamWebShop.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var product = await _context.Products.FindAsync(id);
+            var product = await _context.Product.FindAsync(id);
             if (product != null)
             {
-                _context.Products.Remove(product);
+                _context.Product.Remove(product);
             }
 
             await _context.SaveChangesAsync();
@@ -184,7 +184,7 @@ namespace TeamWebShop.Controllers
 
         private bool ProductExists(int id)
         {
-            return _context.Products.Any(e => e.Id == id);
+            return _context.Product.Any(e => e.Id == id);
         }
     }
 }

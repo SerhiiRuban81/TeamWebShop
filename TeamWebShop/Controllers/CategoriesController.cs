@@ -90,7 +90,7 @@ namespace TeamWebShop.Controllers
         public async Task<IActionResult> ProductsByCategoryChild(int? id, int page = 1)
         {
             int itemsPerPage = 3;
-            IQueryable<Product> products = _context.Products
+            IQueryable<Product> products = _context.Product
                 .Include(c => c.Category)
                 .Where(p => p.CategoryId == id)
                 .Include(b => b.Brand)
@@ -113,7 +113,7 @@ namespace TeamWebShop.Controllers
 
             var parentCategory = await _context.Categories.FirstOrDefaultAsync(c => c.Id == id);
 
-            var allProducts = await _context.Products
+            var allProducts = await _context.Product
                .Include(c => c.Category)
                .Include(b => b.Brand)
                .Include(i => i.ProductImages)
