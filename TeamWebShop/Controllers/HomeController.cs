@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using ShopLibrary;
 using TeamWebShop.Data;
 using TeamWebShop.Models.DTOs.Products;
 using TeamWebShop.Models.ViewModels.Products;
@@ -20,7 +21,7 @@ namespace TeamWebShop.Controllers
         }
         public async Task<IActionResult> Index(string? search)
         {
-            IQueryable<ProductDTO> productsQuery = _context.Product
+            IQueryable<Product> productsQuery = _context.Product
               .Include(c => c.Category)
               .Include(b => b.Brand)
               .Include(i => i.ProductImages);
@@ -35,7 +36,7 @@ namespace TeamWebShop.Controllers
 
             IndexVM indexVM = new IndexVM
             {
-                Products = mapper.Map<IEnumerable<ProductDTO>>(productsList),
+                Product = mapper.Map<IEnumerable<ProductDTO>>(productsList),
                 Search = search
             };
 
