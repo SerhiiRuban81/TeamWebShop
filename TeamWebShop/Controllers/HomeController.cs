@@ -20,25 +20,21 @@ namespace TeamWebShop.Controllers
         }
         public async Task<IActionResult> Index(string? search)
         {
-            IQueryable<Product> productsQuery = _context.Products
-              .Include(c => c.Category)
-              .Include(b => b.Brand)
-              .Include(i => i.ProductImages);
-
+            var products1 = _context.Products
+            .Include(c => c.Category)
+            .Include(b => b.Brand)
+            .Include(i => i.ProductImages)
+            .AsQueryable();
 
             if (!string.IsNullOrWhiteSpace(search))
             {
-                productsQuery = productsQuery.Where(p => p.ProductName.Contains(search));
+                products1 = products1.Where(p => p.ProductName.Contains(search));
             }
-            var productsList = await productsQuery.ToListAsync();
 
-            IndexVM indexVM = new IndexVM
-            {
-                Products = mapper.Map<IEnumerable<Product>>(productsList),
-                Search = search
-            };
+            var products = await products1.ToListAsync();
 
-            return View(indexVM);
+            return View(products);
+
         }
     }
 }
