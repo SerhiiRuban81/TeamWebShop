@@ -21,10 +21,33 @@ namespace TeamWebShop.Controllers
         }
 
         // GET: Products
-        public async Task<IActionResult> Index()
+        //public async Task<IActionResult> Index()
+        //{
+        //    var shopContext = _context.Products.Include(p => p.Brand).Include(p => p.Category);
+        //    return View(await shopContext.ToListAsync());
+        //}
+        public async Task<IActionResult> Index(string? search)
         {
-            var shopContext = _context.Products.Include(p => p.Brand).Include(p => p.Category);
-            return View(await shopContext.ToListAsync());
+            var productsQuery = _context.Products
+                .Include(p => p.Brand)
+                .Include(p => p.Category)
+                .Include(p => p.ProductImages)
+                .AsQueryable();
+
+            if (!string.IsNullOrWhiteSpace(search))
+            {
+                productsQuery = productsQuery.Where(p => p.ProductName.Contains(search));
+            }
+
+            var products = await productsQuery.ToListAsync();
+
+            var viewModel = new IndexVM
+            {
+                Products = products,
+                Search = search
+            };
+
+            return View(viewModel);
         }
 
         // GET: Products/Details/5
